@@ -3,6 +3,7 @@ import { View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SettingsScreen from "./screens/SettingsScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -10,13 +11,18 @@ import AllHotelsScreen from "./screens/AllHotelsScreen";
 import ReservationsScreen from "./screens/ReservationsScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import LoginScreen from "./screens/LoginScreen";
 import MyHotelsScreen from "./screens/MyHotelsScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-
+import { signOut } from "firebase/auth";
+import { auth, app } from "../firebaseConfig";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const LoginStack = () => {
     return (
       <Stack.Navigator
@@ -29,6 +35,7 @@ export default function Router() {
             <LoginScreen
               {...props}
               handleLogin={handleLogin}
+              setIsAdmin={setIsAdmin}
               options={{
                 presentation: "transparentModal",
               }}
@@ -47,7 +54,7 @@ export default function Router() {
   };
   const handleLogin = async () => {
     try {
-      //await AsyncStorage.setItem("isLoggedIn", "true");
+      await AsyncStorage.setItem("isLoggedIn", "true");
       setIsLoggedIn(true);
     } catch (error) {
       console.log(error);
@@ -86,6 +93,7 @@ export default function Router() {
             ),
           }}
         />
+
         <Tab.Screen
           name="Settings"
           component={SettingsScreen}
@@ -93,6 +101,15 @@ export default function Router() {
             tabBarShowLabel: false,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
+            ),
+            headerRight: () => (
+              <MaterialIcons
+                name="logout"
+                size={25}
+                color="black"
+                onPress={onLogout}
+                style={{ marginRight: 10 }}
+              />
             ),
           }}
         />
@@ -131,6 +148,15 @@ export default function Router() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
             ),
+            headerRight: ({ color, size }) => (
+              <MaterialIcons
+                name="logout"
+                size={25}
+                color="black"
+                onPress={onLogout}
+                style={{ marginRight: 10 }}
+              />
+            ),
           }}
         />
       </Tab.Navigator>
@@ -138,35 +164,30 @@ export default function Router() {
   };
 
   const onLogout = async () => {
-    setIsLoggedIn(false);
-    try {
-      //await AsyncStorage.removeItem('isLoggedIn');
-      //await AsyncStorage.removeItem('currentUser');
-    } catch (error) {
-      console.log(error);
-    }
+    signOut(auth)
+      .then(() => {
+        console.log("signout");
+        setIsLoggedIn(false);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
+
   const getIsSignedIn = async () => {
-    //const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-    return false;
+    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+    return isLoggedIn;
   };
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  /*   useEffect(() => {
+  /* useEffect(() => {
     const checkIsSignedIn = async () => {
       const signedIn = await getIsSignedIn();
       setIsLoggedIn(signedIn);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
     };
 
     checkIsSignedIn();
-  }, [isLoggedIn]); */
-
+  }, [isLoggedIn]);
+ */
   /* if (isLoading) {
     return <Splash />;
   } */

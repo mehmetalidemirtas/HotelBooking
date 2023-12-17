@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
-const Input = ({ onChangeText, placeholder, value }) => {
+const Input = ({ onChangeText, placeholder, value, isPassword }) => {
   return (
     <View style={styles.container}>
       <TextInput
@@ -9,6 +9,7 @@ const Input = ({ onChangeText, placeholder, value }) => {
         placeholder={placeholder}
         onChangeText={onChangeText}
         value={value}
+        secureTextEntry={isPassword}
       />
     </View>
   );

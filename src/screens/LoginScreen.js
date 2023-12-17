@@ -8,41 +8,21 @@ import {
   Text,
   View,
 } from "react-native";
-import firebase from "../../firebaseConfig";
+import { auth, app } from "../../firebaseConfig";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
 import FlashMessage, {
   showMessage,
   hideMessage,
 } from "react-native-flash-message";
-const auth = getAuth();
-
-const createUser = async () => {
-  await createUserWithEmailAndPassword(auth, "asdsad@gmail.com", "asdsddad")
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-      showMessage({
-        message: errorMessage,
-        type: "info",
-      });
-      // ..
-    });
-};
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const handleSignOut = async () => {
   signOut(auth)
@@ -53,17 +33,48 @@ const handleSignOut = async () => {
       // An error happened.
     });
 };
-export default function LoginScreen({ navigation, handleLogin }) {
+export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const db = getFirestore(app);
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const isAdminValue = userData.isAdmin;
+          setIsAdmin(isAdminValue);
+          console.log("userid:", user.uid);
+          handleLogin();
+        }
+      }
+    });
+
+    // Clean up
+    return () => unsubscribe();
+  }, []);
+
   const signIn = async () => {
     await signInWithEmailAndPassword(auth, username, password)
-      .then((userCredential) => {
-        // Signed in
+      .then(async (userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        handleLogin();
+        const uid = user.uid;
+        const db = getFirestore(app);
+        const userRef = doc(db, "users", uid);
+
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const isAdminValue = userData.isAdmin;
+          setIsAdmin(isAdminValue);
+        }
+        await handleLogin();
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -113,6 +124,7 @@ export default function LoginScreen({ navigation, handleLogin }) {
         />
         <Input
           placeholder="Şifre"
+          isPassword
           value={password}
           onChangeText={(inputText) => setPassword(inputText)}
         />
