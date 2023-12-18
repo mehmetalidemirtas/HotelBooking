@@ -140,16 +140,13 @@ export default function Router() {
 
   const MainTabsForAdmin = () => {
     return (
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
+      <Tab.Navigator>
         <Tab.Screen
           name="MyHotelsTab"
           component={MyHotelsStack}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="hotel" size={size} color={color} />
             ),

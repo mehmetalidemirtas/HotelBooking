@@ -24,12 +24,8 @@ const getUserHotels = async () => {
     const db = getFirestore();
     const storage = getStorage();
     const hotelsCollectionRef = collection(db, "hotels");
-
     const userHotelsQuery = query(hotelsCollectionRef, where("uid", "==", uid));
-
     const querySnapshot = await getDocs(userHotelsQuery);
-
-    // Oteller koleksiyonundaki belgeleri döngü ile işleyerek bilgileri alabilirsiniz
     const hotelsData = [];
 
     for (const doc of querySnapshot.docs) {
@@ -37,10 +33,8 @@ const getUserHotels = async () => {
       console.log("Hotel Data:", hotelData);
       const hotelId = doc.id;
 
-      const storageRef = ref(storage, `images/${uid}/${hotelId}`);
+      const storageRef = ref(storage, `images/${hotelId}/${uid}`);
       const photoList = await listAll(storageRef);
-
-      // Her bir fotoğraf için downloadURL'yi al
       const photoURLs = await Promise.all(
         photoList.items.map(async (photoRef) => {
           return await getDownloadURL(photoRef);
@@ -48,10 +42,10 @@ const getUserHotels = async () => {
       );
 
       console.log("Photo URLs for Hotel", hotelId, ":", photoURLs);
-
-      // Otel bilgilerini ve fotoğraf URL'lerini birleştirip hotelsData dizisine ekle
       hotelsData.push({
         id: hotelId,
+        hotelName: hotelData.hotelName,
+        capacity: hotelData.capacity,
         city: hotelData.city,
         hotelStar: hotelData.hotelStar,
         photoURLs: photoURLs,
@@ -66,7 +60,7 @@ const getUserHotels = async () => {
       "Error retrieving user hotels and photos from Firestore:",
       error
     );
-    throw error; // Hata durumunda dışarıya hatayı fırlat
+    throw error;
   }
 };
 export default function MyHotelsScreen({ navigation }) {
@@ -76,11 +70,11 @@ export default function MyHotelsScreen({ navigation }) {
     const fetchHotels = async () => {
       try {
         const fetchedHotels = await getUserHotels();
-        setHotels(fetchedHotels || []); // fetchedHotels null veya undefined ise boş dizi ata
+        setHotels(fetchedHotels || []);
         console.log("hotels", hotels);
       } catch (error) {
         console.error("Error fetching hotels:", error);
-        setHotels([]); // Hata durumunda da boş dizi ata
+        setHotels([]);
       }
     };
 
@@ -91,11 +85,11 @@ export default function MyHotelsScreen({ navigation }) {
       const fetchHotels = async () => {
         try {
           const fetchedHotels = await getUserHotels();
-          setHotels(fetchedHotels || []); // fetchedHotels null veya undefined ise boş dizi ata
+          setHotels(fetchedHotels || []);
           console.log("hotels", hotels);
         } catch (error) {
           console.error("Error fetching hotels:", error);
-          setHotels([]); // Hata durumunda da boş dizi ata
+          setHotels([]);
         }
       };
       fetchHotels();
@@ -113,8 +107,9 @@ export default function MyHotelsScreen({ navigation }) {
           <View>
             {hotels.map((hotel) => (
               <HotelCard
-                key={hotel.id} // Eğer hotel nesnesinde benzersiz bir kimlik varsa kullanabilirsiniz
+                key={hotel.id}
                 city={hotel.city}
+                hotelName={hotel.hotelName}
                 hotelStar={hotel.hotelStar}
                 photoURLs={hotel.photoURLs}
               />

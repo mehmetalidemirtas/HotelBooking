@@ -1,11 +1,10 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import StarRating from "./StarRating";
 
-const HotelCard = ({ city, hotelStar, photoURLs }) => {
+const HotelCard = ({ city, hotelStar, photoURLs, hotelName, capacity }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.city}>{city}</Text>
-      <Text style={styles.hotelStar}>{`${hotelStar} stars`}</Text>
       {photoURLs.length > 0 && (
         <Image
           source={{ uri: photoURLs[0] }}
@@ -13,21 +12,35 @@ const HotelCard = ({ city, hotelStar, photoURLs }) => {
           resizeMode="cover"
         />
       )}
+      <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+        {hotelName}
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.city}>Konum: {city}</Text>
+        <StarRating rating={hotelStar} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
+    backgroundColor: "#f7f7f7",
+    padding: 15,
     margin: 10,
+    borderRadius: 20,
   },
   city: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
+    marginTop: 5,
   },
   hotelStar: {
     fontSize: 16,
@@ -36,8 +49,7 @@ const styles = StyleSheet.create({
   photo: {
     width: "100%",
     height: 200,
-    borderRadius: 8,
-    marginTop: 5,
+    borderRadius: 15,
   },
 });
 
