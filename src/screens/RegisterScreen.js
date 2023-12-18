@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, app } from "../../firebaseConfig";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
@@ -9,8 +10,6 @@ import FlashMessage, {
   showMessage,
   hideMessage,
 } from "react-native-flash-message";
-
-const auth = getAuth();
 
 export default function RegisterScreen({ navigation }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -22,7 +21,6 @@ export default function RegisterScreen({ navigation }) {
   const createUser = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        // Signed in
         const user = userCredential.user;
         console.log(user);
         const db = getFirestore();
@@ -37,7 +35,7 @@ export default function RegisterScreen({ navigation }) {
         console.log(errorCode, errorMessage);
         showMessage({
           message: errorMessage,
-          type: "danger",
+          type: "info",
         });
         // ..
       });
@@ -78,8 +76,8 @@ export default function RegisterScreen({ navigation }) {
           <Picker.Item label="Otel Sahibi" value="true" />
         </Picker>
         <Button onPress={createUser} title={"Kayıt Ol"} />
+        <FlashMessage position="top" />
       </View>
-      <FlashMessage position="top" />
     </SafeAreaView>
   );
 }

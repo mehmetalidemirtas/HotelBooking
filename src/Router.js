@@ -17,12 +17,33 @@ import MyHotelsScreen from "./screens/MyHotelsScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { signOut } from "firebase/auth";
 import { auth, app } from "../firebaseConfig";
+import AddNewHotelScreen from "./screens/AddNewHotelScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const MyHotelsStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="My Hotels"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={MyHotelsScreen}
+        />
+        <Stack.Screen
+          name="AddNewHotel"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={AddNewHotelScreen}
+        />
+      </Stack.Navigator>
+    );
+  };
   const LoginStack = () => {
     return (
       <Stack.Navigator
@@ -119,10 +140,14 @@ export default function Router() {
 
   const MainTabsForAdmin = () => {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Tab.Screen
-          name="My Hotels"
-          component={MyHotelsScreen}
+          name="MyHotelsTab"
+          component={MyHotelsStack}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: ({ color, size }) => (
