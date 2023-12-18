@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, app } from "../../firebaseConfig";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+} from "firebase/firestore";
 import {
   ref,
   uploadString,
@@ -72,37 +78,63 @@ export default function AddNewHotelScreen({ navigation }) {
       console.error('Error uploading image:', error);
     }
   }; */
-  const uploadImagesToFirebase = async () => {
+  const uploadImagesToFirebase = async (hotelId) => {
     const uid = await AsyncStorage.getItem("uid");
     try {
       const storage = getStorage();
-      const metadata = {
-        contentType: "image/jpeg",
-      };
+
+      // Otelin belge kimliği ile ilişkilendirilmiş bir alt klasör oluştur
+      const storageRef = ref(storage, `images/${uid}/${hotelId}`);
+
       await Promise.all(
         selectedImages.map(async (image, index) => {
           const response = await fetch(image);
           const blob = await response.blob();
-          const storageRef = ref(storage, `images/${uid}/image_${index}.jpg`);
-          await uploadBytes(storageRef, blob);
-          console.log(`Image ${index} uploaded to Firebase.`);
+
+          // Otelin belge kimliği ile ilişkilendirilmiş bir alt dosya oluştur
+          const fileRef = ref(storageRef, `image_${index}.jpg`);
+
+          // Firebase Storage'e yüklenen fotoğrafın URL'ini al
+          await uploadBytes(fileRef, blob);
+          const downloadURL = await getDownloadURL(fileRef);
+
+          console.log(
+            `Image ${index} uploaded to Firebase. Download URL: ${downloadURL}`
+          );
         })
       );
     } catch (error) {
       console.error("Error uploading images to Firebase:", error);
     }
   };
+
   const AddNewHotel = async () => {
-    const uid = await AsyncStorage.getItem("uid");
-    console.log("user credetials: ", uid);
-    const db = getFirestore();
-    const userRef = doc(db, "hotels", uid);
-    await setDoc(userRef, {
-      hotelStar,
-      city,
-    });
-    uploadImagesToFirebase();
-    console.log("User data added to Firestore successfully");
+    try {
+      const uid = await AsyncStorage.getItem("uid");
+      console.log("user credentials:", uid);
+      const db = getFirestore();
+
+      // Oteller koleksiyonunu temsil eden bir referans oluştur
+      const hotelsCollectionRef = collection(db, "hotels");
+
+      // Yeni otel için benzersiz bir belge oluştur ve otel bilgilerini kaydet
+      const newHotelRef = await addDoc(hotelsCollectionRef, {
+        uid,
+        hotelStar,
+        city,
+      });
+
+      // Otelin belge kimliğini alabilirsiniz
+      const hotelId = newHotelRef.id;
+      console.log("New hotel added with ID:", hotelId);
+
+      // Fotoğrafları bu otelin alt klasörüne yükle
+      await uploadImagesToFirebase(hotelId);
+
+      console.log("Hotel data and images added to Firestore successfully");
+    } catch (error) {
+      console.error("Error adding hotel data and images to Firestore:", error);
+    }
   };
   const renderImageItem = ({ item }) => (
     <Image source={{ uri: item }} style={styles.imageItem} />
