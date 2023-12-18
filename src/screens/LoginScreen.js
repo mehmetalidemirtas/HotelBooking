@@ -18,6 +18,7 @@ import {
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
+
 import FlashMessage, {
   showMessage,
   hideMessage,
@@ -48,6 +49,9 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           const userData = userDoc.data();
           const isAdminValue = userData.isAdmin;
           setIsAdmin(isAdminValue);
+          const uid = user.uid;
+          await AsyncStorage.setItem("uid", uid);
+
           console.log("userid:", user.uid);
           handleLogin();
         }
