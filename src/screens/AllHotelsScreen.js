@@ -106,11 +106,13 @@ export default function AllHotelsScreen({ navigation }) {
         <View>
           {hotels.map((hotel) => (
             <HotelCard
+              navigation={navigation}
               key={hotel.id}
               city={hotel.city}
               hotelName={hotel.hotelName}
               hotelStar={hotel.hotelStar}
               photoURLs={hotel.photoURLs}
+              capacity={hotel.capacity}
             />
           ))}
         </View>

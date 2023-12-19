@@ -49,6 +49,7 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           const userData = userDoc.data();
           const isAdminValue = userData.isAdmin;
           setIsAdmin(isAdminValue);
+          await AsyncStorage.setItem("isAdmin", JSON.stringify(isAdminValue));
           const uid = user.uid;
           await AsyncStorage.setItem("uid", uid);
 

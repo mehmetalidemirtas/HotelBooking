@@ -18,6 +18,8 @@ import RegisterScreen from "./screens/RegisterScreen";
 import { signOut } from "firebase/auth";
 import { auth, app } from "../firebaseConfig";
 import AddNewHotelScreen from "./screens/AddNewHotelScreen";
+import HotelDetailsScreen from "./screens/HotelDetailsScreen";
+import EditHotelScreen from "./screens/EditHotelScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
@@ -40,6 +42,33 @@ export default function Router() {
             presentation: "transparentModal",
           }}
           component={AddNewHotelScreen}
+        />
+        <Stack.Screen
+          name="EditHotel"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={EditHotelScreen}
+        />
+      </Stack.Navigator>
+    );
+  };
+  const AllHotelsStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="AllHotels"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={AllHotelsScreen}
+        />
+        <Stack.Screen
+          name="HotelDetails"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={HotelDetailsScreen}
         />
       </Stack.Navigator>
     );
@@ -95,9 +124,10 @@ export default function Router() {
           }}
         />
         <Tab.Screen
-          name="All Hotels"
-          component={AllHotelsScreen}
+          name="AllHotelsStack"
+          component={AllHotelsStack}
           options={{
+            headerShown: false,
             tabBarShowLabel: false,
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="hotel" size={size} color={color} />
