@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Dimensions,
   FlatList,
   Image,
@@ -11,6 +10,7 @@ import {
   View,
 } from "react-native";
 import StarRating from "../components/Card/StarRating";
+import Button from "../components/Button/Button";
 const { width } = Dimensions.get("window");
 
 export default function HotelDetailsScreen({ navigation, route }) {
@@ -18,6 +18,11 @@ export default function HotelDetailsScreen({ navigation, route }) {
   const renderImageItem = ({ item }) => (
     <Image source={{ uri: item }} style={styles.imageItem} />
   );
+
+  const bookingHotel = () => {
+    console.log("book hotel...");
+  };
+
   return (
     <View style={styles.container}>
       {photoURLs.length > 0 && (
@@ -38,19 +43,20 @@ export default function HotelDetailsScreen({ navigation, route }) {
           />
         </View>
       )}
-      <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
-        {hotelName}
-      </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text style={styles.city}>Konum: {city}</Text>
-        <StarRating rating={hotelStar} />
+      <View style={{ margin: 15 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{hotelName}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.city}>Konum: {city}</Text>
+          <StarRating rating={hotelStar} />
+        </View>
       </View>
+      <Button title="Rezervasyon Yap" onPress={bookingHotel} />
     </View>
   );
 }
