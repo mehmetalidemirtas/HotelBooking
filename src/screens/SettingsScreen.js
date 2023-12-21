@@ -62,16 +62,24 @@ export default function SettingsScreen({ navigation }) {
         </View>
       </View>
 
-      <Pressable onPress={() => navigation.navigate("Reservations")}>
+      <Pressable
+        onPress={() => navigation.navigate("EditProfile", { name: name })}
+      >
         <View style={styles.bottom_container}>
           <Text style={styles.title}>Kullanıcı adını değiştir</Text>
           <MaterialCommunityIcons name="account" size={24} color="black" />
         </View>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate("Reservations")}>
+      <Pressable
+        onPress={() => navigation.navigate("EditProfile", { surname })}
+      >
         <View style={styles.bottom_container}>
           <Text style={styles.title}>Kullanıcı soyadını değiştir</Text>
-          <MaterialCommunityIcons name="account" size={24} color="black" />
+          <MaterialCommunityIcons
+            name="account-multiple"
+            size={24}
+            color="black"
+          />
         </View>
       </Pressable>
     </SafeAreaView>

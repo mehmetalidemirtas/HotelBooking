@@ -20,6 +20,7 @@ import { auth, app } from "../firebaseConfig";
 import AddNewHotelScreen from "./screens/AddNewHotelScreen";
 import HotelDetailsScreen from "./screens/HotelDetailsScreen";
 import EditHotelScreen from "./screens/EditHotelScreen";
+import SettingsModalScreen from "./screens/SettingsModalScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
@@ -109,6 +110,24 @@ export default function Router() {
       </Stack.Navigator>
     );
   };
+  const SettingsStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SettingsScreen"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={SettingsScreen}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          options={{ presentation: "transparentModal" }}
+          component={SettingsModalScreen}
+        />
+      </Stack.Navigator>
+    );
+  };
   const handleLogin = async () => {
     try {
       await AsyncStorage.setItem("isLoggedIn", "true");
@@ -154,9 +173,10 @@ export default function Router() {
 
         <Tab.Screen
           name="Settings"
-          component={SettingsScreen}
+          component={SettingsStack}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
             ),
@@ -201,13 +221,14 @@ export default function Router() {
         />
         <Tab.Screen
           name="Settings"
-          component={SettingsScreen}
+          component={SettingsStack}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
             ),
-            headerRight: ({ color, size }) => (
+            headerRight: () => (
               <MaterialIcons
                 name="logout"
                 size={25}
