@@ -18,6 +18,7 @@ import {
 } from "firebase/storage";
 
 import {
+  ActivityIndicator,
   Dimensions,
   FlatList,
   Image,
@@ -42,6 +43,7 @@ export default function AddNewHotelScreen({ navigation }) {
   const [capacity, setCapacity] = useState("");
   const [hotelStar, setHotelStar] = useState(2);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -72,6 +74,8 @@ export default function AddNewHotelScreen({ navigation }) {
   };
 
   const uploadImagesToFirebase = async (hotelId) => {
+    setLoading(true);
+
     const uid = await AsyncStorage.getItem("uid");
     try {
       const storage = getStorage();
@@ -93,12 +97,14 @@ export default function AddNewHotelScreen({ navigation }) {
           );
         })
       );
+      setLoading(false);
     } catch (error) {
       console.error("Error uploading images to Firebase:", error);
     }
   };
 
   const AddNewHotel = async () => {
+    setLoading(true);
     try {
       const uid = await AsyncStorage.getItem("uid");
       console.log("user credentials:", uid);
@@ -120,6 +126,8 @@ export default function AddNewHotelScreen({ navigation }) {
       await uploadImagesToFirebase(hotelId);
 
       console.log("Hotel data and images added to Firestore successfully");
+      setLoading(false);
+      navigation.navigate("My Hotels");
     } catch (error) {
       console.error("Error adding hotel data and images to Firestore:", error);
     }
@@ -129,70 +137,87 @@ export default function AddNewHotelScreen({ navigation }) {
   );
   return (
     <ScrollView style={styles.container}>
-      <View>
-        {selectedImages.length > 0 && (
-          <View
-            style={{
-              margin: 15,
-              marginBottom: 10,
-              flex: 1,
-              justifyContent: "center",
-            }}
-          >
-            <FlatList
-              data={selectedImages}
-              renderItem={renderImageItem}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
-        )}
-        <Button title="Fotoğraf Seçiniz" onPress={pickImages} />
-        <Input
-          placeholder={"Otel adı giriniz"}
-          value={hotelName}
-          onChangeText={(inputText) => setHotelName(inputText)}
-        />
-        <Input
-          placeholder={"Kapasite giriniz"}
-          value={capacity}
-          onChangeText={(inputText) => setCapacity(inputText)}
-        />
-        <Picker
-          selectedValue={city}
-          onValueChange={(itemValue) => setCity(itemValue)}
-        >
-          <Picker.Item label="Şehir seçiniz" value={null} />
-          {citiesInTurkey.map((city, index) => (
-            <Picker.Item key={index} label={city} value={city} />
-          ))}
-        </Picker>
-        <View
-          style={{ margin: 15, alignItems: "center", flexDirection: "row" }}
-        >
-          <Text style={{ marginRight: 10 }}>Yıldız Seçiniz: </Text>
-          <Stars
-            default={2}
-            update={(val) => {
-              setHotelStar(val);
-              console.log(val);
-            }}
-            count={5}
-            half={false}
-            starSize={40}
-            fullStar={<AntDesign name="star" style={[styles.myStarStyle]} />}
-            emptyStar={
-              <AntDesign
-                name="staro"
-                style={[styles.myStarStyle, styles.myEmptyStarStyle]}
-              />
-            }
+      {loading ? (
+        <>
+          <ActivityIndicator
+            size="large"
+            color="red"
+            style={{ marginTop: 300 }}
           />
-        </View>
-        <Button title="Otelinizi Ekleyin" onPress={AddNewHotel} />
-      </View>
+          <Text style={{ textAlign: "center" }}>
+            Oteliniz sunucuya kaydediliyor, Lütfen bekleyiniz...
+          </Text>
+        </>
+      ) : (
+        <>
+          <View>
+            {selectedImages.length > 0 && (
+              <View
+                style={{
+                  margin: 15,
+                  marginBottom: 10,
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+              >
+                <FlatList
+                  data={selectedImages}
+                  renderItem={renderImageItem}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            )}
+            <Button title="Fotoğraf Seçiniz" onPress={pickImages} />
+            <Input
+              placeholder={"Otel adı giriniz"}
+              value={hotelName}
+              onChangeText={(inputText) => setHotelName(inputText)}
+            />
+            <Input
+              placeholder={"Kapasite giriniz"}
+              value={capacity}
+              onChangeText={(inputText) => setCapacity(inputText)}
+            />
+            <Picker
+              selectedValue={city}
+              onValueChange={(itemValue) => setCity(itemValue)}
+            >
+              <Picker.Item label="Şehir seçiniz" value={null} />
+              {citiesInTurkey.map((city, index) => (
+                <Picker.Item key={index} label={city} value={city} />
+              ))}
+            </Picker>
+            <View
+              style={{ margin: 15, alignItems: "center", flexDirection: "row" }}
+            >
+              <Text style={{ marginRight: 10 }}>Yıldız Seçiniz: </Text>
+              <Stars
+                default={2}
+                update={(val) => {
+                  setHotelStar(val);
+                  console.log(val);
+                }}
+                count={5}
+                half={false}
+                starSize={40}
+                fullStar={
+                  <AntDesign name="star" style={[styles.myStarStyle]} />
+                }
+                emptyStar={
+                  <AntDesign
+                    name="staro"
+                    style={[styles.myStarStyle, styles.myEmptyStarStyle]}
+                  />
+                }
+              />
+            </View>
+            <Button title="Otelinizi Ekleyin" onPress={AddNewHotel} />
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -214,8 +239,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
   imageItem: {
-    width,
+    width: 300,
     height: 250,
     resizeMode: "cover",
+    borderRadius: 15,
+    marginRight: 10,
   },
 });

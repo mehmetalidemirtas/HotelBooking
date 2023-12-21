@@ -19,25 +19,37 @@ import Input from "../components/Input/Input";
 const { width } = Dimensions.get("window");
 
 export default function HotelDetailsScreen({ navigation, route }) {
-  const { hotelName, city, hotelStar, photoURLs, capacity } = route.params;
+  const { JhotelName, Jcity, JhotelStar, JphotoURLs, Jcapacity } = route.params;
 
-  const [date, setDate] = useState(new Date());
+  const [enterDate, setEnterDate] = useState(new Date());
+  const [exitDate, setExitDate] = useState(new Date());
   const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
+  const [showEnterDate, setShowEnterDate] = useState(false);
+  const [showExitDate, setShowExitDate] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
+    setShowEnterDate(false);
+    setEnterDate(currentDate);
   };
-
+  const onChangeExitDate = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShowExitDate(false);
+    setExitDate(currentDate);
+  };
   const showMode = (currentMode) => {
-    setShow(true);
+    setShowEnterDate(true);
     setMode(currentMode);
   };
-
+  const showModeExitDate = (currentMode) => {
+    setShowExitDate(true);
+    setMode(currentMode);
+  };
   const showDatepicker = () => {
     showMode("date");
+  };
+  const showDatepickerExit = () => {
+    showModeExitDate("date");
   };
 
   const renderImageItem = ({ item }) => (
@@ -50,7 +62,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      {photoURLs.length > 0 && (
+      {JphotoURLs.length > 0 && (
         <View
           style={{
             margin: 15,
@@ -59,7 +71,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
           }}
         >
           <FlatList
-            data={photoURLs}
+            data={JphotoURLs}
             renderItem={renderImageItem}
             keyExtractor={(item, index) => index.toString()}
             horizontal
@@ -69,7 +81,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
         </View>
       )}
       <View style={{ margin: 15 }}>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{hotelName}</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{JhotelName}</Text>
         <View
           style={{
             flexDirection: "row",
@@ -77,24 +89,34 @@ export default function HotelDetailsScreen({ navigation, route }) {
             justifyContent: "space-between",
           }}
         >
-          <Text style={styles.city}>Konum: {city}</Text>
-          <StarRating rating={hotelStar} />
+          <Text style={styles.city}>Konum: {Jcity}</Text>
+          <StarRating rating={JhotelStar} />
         </View>
         <Button
           onPress={showDatepicker}
-          title={"Otele Giriş Tarihi: " + date.toLocaleDateString()}
+          title={"Otele Giriş Tarihi: " + enterDate.toLocaleDateString()}
         />
         <Button
-          onPress={showDatepicker}
-          title={"Otelden Çıkış Tarihi: " + date.toLocaleDateString()}
+          onPress={showDatepickerExit}
+          title={"Otelden Çıkış Tarihi: " + exitDate.toLocaleDateString()}
         />
-        {show && (
+        {showEnterDate && (
           <DateTimePicker
             testID="dateTimePicker"
-            value={date}
+            value={enterDate}
             mode={mode}
             is24Hour={true}
             onChange={onChange}
+            minimumDate={new Date()}
+          />
+        )}
+        {showExitDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={exitDate}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChangeExitDate}
             minimumDate={new Date()}
           />
         )}

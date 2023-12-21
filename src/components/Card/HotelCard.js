@@ -13,7 +13,13 @@ const getIsAdmin = async () => {
   }
 };
 
-const HotelCard = ({ city, hotelStar, photoURLs, hotelName, capacity }) => {
+const HotelCard = ({
+  Jcity,
+  JhotelStar,
+  JphotoURLs,
+  JhotelName,
+  Jcapacity,
+}) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -21,41 +27,43 @@ const HotelCard = ({ city, hotelStar, photoURLs, hotelName, capacity }) => {
     const fetchIsAdmin = async () => {
       const adminStatus = await getIsAdmin();
       setIsAdmin(adminStatus);
+      console.log("adminStatus: ", adminStatus);
+      console.log(isAdmin);
     };
     fetchIsAdmin();
   }, []);
 
   const handlePress = () => {
-    if (isAdmin === true) {
-      navigation.navigate("EditHotel", {
-        hotelName,
-        city,
-        hotelStar,
-        photoURLs,
-        capacity,
+    if (isAdmin === "false") {
+      navigation.navigate("HotelDetails", {
+        JhotelName,
+        Jcity,
+        JhotelStar,
+        JphotoURLs,
+        Jcapacity,
       });
     } else {
-      navigation.navigate("HotelDetails", {
-        hotelName,
-        city,
-        hotelStar,
-        photoURLs,
-        capacity,
+      navigation.navigate("EditHotel", {
+        JhotelName,
+        Jcity,
+        JhotelStar,
+        JphotoURLs,
+        Jcapacity,
       });
     }
   };
   return (
     <Pressable onPress={handlePress}>
       <View style={styles.container}>
-        {photoURLs.length > 0 && (
+        {JphotoURLs.length > 0 && (
           <Image
-            source={{ uri: photoURLs[0] }}
+            source={{ uri: JphotoURLs[0] }}
             style={styles.photo}
             resizeMode="cover"
           />
         )}
         <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
-          {hotelName}
+          {JhotelName}
         </Text>
         <View
           style={{
@@ -64,8 +72,8 @@ const HotelCard = ({ city, hotelStar, photoURLs, hotelName, capacity }) => {
             justifyContent: "space-between",
           }}
         >
-          <Text style={styles.city}>Konum: {city}</Text>
-          <StarRating rating={hotelStar} />
+          <Text style={styles.city}>Konum: {Jcity}</Text>
+          <StarRating rating={JhotelStar} />
         </View>
       </View>
     </Pressable>

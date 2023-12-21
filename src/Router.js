@@ -70,6 +70,13 @@ export default function Router() {
           }}
           component={HotelDetailsScreen}
         />
+        <Stack.Screen
+          name="EditHotel"
+          options={{
+            presentation: "transparentModal",
+          }}
+          component={EditHotelScreen}
+        />
       </Stack.Navigator>
     );
   };

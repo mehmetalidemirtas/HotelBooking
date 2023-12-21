@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, app } from "../../firebaseConfig";
-import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import Button from "../components/Button/Button";
 import {
   getFirestore,
@@ -65,14 +72,19 @@ const getUserHotels = async () => {
 };
 export default function MyHotelsScreen({ navigation }) {
   const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHotels = async () => {
+      setLoading(true);
+
       try {
         const fetchedHotels = await getUserHotels();
         setHotels(fetchedHotels || []);
         console.log("hotels", hotels);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching hotels:", error);
         setHotels([]);
       }
@@ -105,15 +117,29 @@ export default function MyHotelsScreen({ navigation }) {
       <ScrollView style={styles.container}>
         <View>
           <View>
-            {hotels.map((hotel) => (
-              <HotelCard
-                key={hotel.id}
-                city={hotel.city}
-                hotelName={hotel.hotelName}
-                hotelStar={hotel.hotelStar}
-                photoURLs={hotel.photoURLs}
-              />
-            ))}
+            {loading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="red"
+                  style={{ marginTop: 300 }}
+                />
+                <Text style={{ textAlign: "center" }}>
+                  Otelleriniz sunucudan getiriliyor, Lütfen bekleyiniz...
+                </Text>
+              </>
+            ) : (
+              hotels.map((hotel) => (
+                <HotelCard
+                  key={hotel.id}
+                  Jcity={hotel.city}
+                  JhotelName={hotel.hotelName}
+                  JhotelStar={hotel.hotelStar}
+                  JphotoURLs={hotel.photoURLs}
+                  Jcapacity={hotel.capacity}
+                />
+              ))
+            )}
           </View>
         </View>
       </ScrollView>
