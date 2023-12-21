@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, app } from "../../firebaseConfig";
-import {
-  getFirestore,
-  collection,
-  doc,
-  addDoc,
-  setDoc,
-} from "firebase/firestore";
-import {
-  ref,
-  uploadString,
-  listAll,
-  getDownloadURL,
-  getStorage,
-  uploadBytes,
-} from "firebase/storage";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { ref, getDownloadURL, getStorage, uploadBytes } from "firebase/storage";
 
 import {
   ActivityIndicator,
-  Dimensions,
   FlatList,
   Image,
   ScrollView,
@@ -35,8 +19,15 @@ import citiesInTurkey from "../../assets/cities";
 import { AntDesign } from "@expo/vector-icons";
 import Stars from "react-native-stars";
 import * as ImagePicker from "expo-image-picker";
-const { width } = Dimensions.get("window");
+import * as Notifications from "expo-notifications";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 export default function AddNewHotelScreen({ navigation }) {
   const [city, setCity] = useState(null);
   const [hotelName, setHotelName] = useState("");
@@ -44,6 +35,29 @@ export default function AddNewHotelScreen({ navigation }) {
   const [hotelStar, setHotelStar] = useState(2);
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const { granted } = await Notifications.requestPermissionsAsync();
+      if (!granted) {
+        console.log("Bildirim izinleri reddedildi.");
+      }
+    };
+
+    requestPermissions();
+  }, []);
+
+  const sendNotification = async () => {
+    const notificationContent = {
+      title: "BAŞARILI",
+      body: "Otel ekleme işleminiz başarıyla tamamlandı!",
+      sound: true,
+    };
+
+    await Notifications.scheduleNotificationAsync({
+      content: notificationContent,
+      trigger: null,
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -126,6 +140,7 @@ export default function AddNewHotelScreen({ navigation }) {
       await uploadImagesToFirebase(hotelId);
 
       console.log("Hotel data and images added to Firestore successfully");
+      sendNotification();
       setLoading(false);
       navigation.navigate("My Hotels");
     } catch (error) {
@@ -214,6 +229,7 @@ export default function AddNewHotelScreen({ navigation }) {
                 }
               />
             </View>
+
             <Button title="Otelinizi Ekleyin" onPress={AddNewHotel} />
           </View>
         </>
