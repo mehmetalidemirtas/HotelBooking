@@ -16,6 +16,7 @@ const ReservationCard = ({
   enterDate,
   exitDate,
   status,
+  roomNo,
 }) => {
   return (
     <View style={styles.container}>
@@ -27,6 +28,20 @@ const ReservationCard = ({
         <Text>Giriş Tarihi: {enterDate}</Text>
         <Text>Çıkış Tarihi: {exitDate}</Text>
       </View>
+      {status !== false && (
+        <View>
+          <Text
+            style={{
+              color: "#5C8374",
+              fontStyle: "italic",
+              fontWeight: "bold",
+              marginBottom: 10,
+            }}
+          >
+            Sizin İçin Tanımlanan Oda Numarası: {roomNo}
+          </Text>
+        </View>
+      )}
       <View
         style={{
           flexDirection: "row",

@@ -4,7 +4,16 @@ import StarRating from "./StarRating";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../Button/Button";
-import { doc, updateDoc, getFirestore } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
 const ConfirmReservationCard = ({
@@ -23,30 +32,54 @@ const ConfirmReservationCard = ({
   reservationID,
   roomNo,
 }) => {
+  const [loading, setLoading] = useState(false);
   const generateRoomNumber = (capacity) => {
-    if (capacity === undefined) {
-      capacity = 200;
-    }
     const randomRoom = Math.floor(Math.random() * capacity) + 1;
     return randomRoom;
   };
 
-  const updateUser = async () => {
+  async function decreaseHotelCapacity(hotelName) {
+    setLoading(true);
+    const db = getFirestore();
+    const hotelsCollectionRef = collection(db, "hotels");
+
+    const hotelQuery = query(
+      hotelsCollectionRef,
+      where("hotelName", "==", hotelName)
+    );
+
+    try {
+      const querySnapshot = await getDocs(hotelQuery);
+      for (const document of querySnapshot.docs) {
+        const hotelRef = doc(db, "hotels", document.id);
+        const hotelData = document.data();
+        const currentCapacity = hotelData.capacity;
+        let newCapacity = currentCapacity - 1;
+        await updateDoc(hotelRef, {
+          capacity: newCapacity,
+        });
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error decreasing hotel capacity:", error);
+    }
+  }
+  const updateReservation = async () => {
+    setLoading(true);
     const roomNo = generateRoomNumber(capacity);
-    console.log("roomno:", roomNo);
     const db = getFirestore();
     const washingtonRef = doc(db, "reservations", reservationID);
-    console.log("washingtonRef", washingtonRef);
     await updateDoc(washingtonRef, {
       status: true,
       roomNo: roomNo,
     });
-    console.log("Güncellendi");
+    decreaseHotelCapacity(hotelName);
+    setLoading(false);
   };
 
   const confirmReservationButton = () => {
-    console.log("clicked");
-    updateUser();
+    updateReservation();
   };
 
   return (
@@ -138,7 +171,11 @@ const ConfirmReservationCard = ({
       </View>
 
       {status === false && (
-        <Button title={"Talebi Onayla"} onPress={confirmReservationButton} />
+        <Button
+          title={"Talebi Onayla"}
+          onPress={confirmReservationButton}
+          loading={loading}
+        />
       )}
     </View>
   );

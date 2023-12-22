@@ -76,6 +76,7 @@ const getUserHotels = async () => {
         enterDate: formattedEnterDate,
         exitDate: formattedExitDate,
         status: hotelData.status,
+        roomNo: hotelData.roomNo,
       });
     }
 
@@ -157,6 +158,7 @@ export default function ReservationsScreen({ navigation }) {
                   city={hotel.city}
                   enterDate={hotel.enterDate}
                   exitDate={hotel.exitDate}
+                  roomNo={hotel.roomNo}
                 />
               ))}
             </View>

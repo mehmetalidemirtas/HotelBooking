@@ -159,6 +159,7 @@ export default function Router() {
     try {
       await AsyncStorage.setItem("isLoggedIn", "true");
       setIsLoggedIn(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -295,9 +296,7 @@ export default function Router() {
     checkIsSignedIn();
   }, [isLoggedIn]);
  */
-  /* if (isLoading) {
-    return <Splash />;
-  } */
+
   return (
     <NavigationContainer>
       <Stack.Navigator

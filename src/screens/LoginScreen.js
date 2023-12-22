@@ -38,10 +38,13 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
+  const [splash, setSplash] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setLoading(true);
+        setSplash(true);
         const db = getFirestore(app);
         const userRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userRef);
@@ -54,6 +57,8 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           const uid = user.uid;
           await AsyncStorage.setItem("uid", uid);
           handleLogin();
+          setLoading(false);
+          setSplash(false);
         }
       }
     });
@@ -117,33 +122,47 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logo_container}>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/login-logo.png")}
-        />
-      </View>
-      <View style={styles.body_container}>
-        <Input
-          placeholder="Kullanıcı adı"
-          value={username}
-          onChangeText={(inputText) => setUsername(inputText)}
-        />
-        <Input
-          placeholder="Şifre"
-          isPassword
-          value={password}
-          onChangeText={(inputText) => setPassword(inputText)}
-        />
-        <Button onPress={signIn} title={"Giriş Yap"} loading={loading} />
-        <Button
-          title={"Kayıt Ol"}
-          onPress={() => navigation.navigate("RegisterScreen")}
-          loading={loading}
-        />
-        <StatusBar style="auto" />
-      </View>
-      <FlashMessage position="top" />
+      {splash === true ? (
+        <Text
+          style={{
+            justifyContent: "center",
+            textAlign: "center",
+            alignItems: "center",
+          }}
+        >
+          Splash Screen is here
+        </Text>
+      ) : (
+        <>
+          <View style={styles.logo_container}>
+            <Image
+              style={styles.logo}
+              source={require("../../assets/login-logo.png")}
+            />
+          </View>
+          <View style={styles.body_container}>
+            <Input
+              placeholder="Kullanıcı adı"
+              value={username}
+              onChangeText={(inputText) => setUsername(inputText)}
+            />
+            <Input
+              placeholder="Şifre"
+              isPassword
+              value={password}
+              onChangeText={(inputText) => setPassword(inputText)}
+            />
+            <Button onPress={signIn} title={"Giriş Yap"} loading={loading} />
+            <Button
+              title={"Kayıt Ol"}
+              onPress={() => navigation.navigate("RegisterScreen")}
+              loading={loading}
+            />
+            <StatusBar style="auto" />
+          </View>
+          <FlashMessage position="top" />
+        </>
+      )}
     </SafeAreaView>
   );
 }
