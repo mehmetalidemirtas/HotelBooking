@@ -74,6 +74,7 @@ const getAllHotels = async () => {
         city: hotelData.city,
         hotelStar: hotelData.hotelStar,
         photoURLs: photoURLs,
+        hotelOwnerUID: hotelData.uid,
       });
     }
 
@@ -134,6 +135,7 @@ export default function AllHotelsScreen({ navigation }) {
               JhotelStar={hotel.hotelStar}
               JphotoURLs={hotel.photoURLs}
               Jcapacity={hotel.capacity}
+              JhotelOwnerUID={hotel.hotelOwnerUID}
             />
           ))
         )}

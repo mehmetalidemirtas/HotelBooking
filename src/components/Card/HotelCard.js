@@ -19,6 +19,7 @@ const HotelCard = ({
   JphotoURLs,
   JhotelName,
   Jcapacity,
+  JhotelOwnerUID,
 }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -41,6 +42,7 @@ const HotelCard = ({
         JhotelStar,
         JphotoURLs,
         Jcapacity,
+        JhotelOwnerUID,
       });
     } else {
       navigation.navigate("EditHotel", {
@@ -49,6 +51,7 @@ const HotelCard = ({
         JhotelStar,
         JphotoURLs,
         Jcapacity,
+        JhotelOwnerUID,
       });
     }
   };
