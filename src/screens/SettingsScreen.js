@@ -50,7 +50,7 @@ export default function SettingsScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.text_container}>
         <Text style={styles.name_text}>
-          {name} {surname} Hoşgeldiniz
+          Hoşgeldiniz {name} {surname}
         </Text>
         <View style={styles.title_container}>
           <Text style={styles.title}>Email Adresi:</Text>

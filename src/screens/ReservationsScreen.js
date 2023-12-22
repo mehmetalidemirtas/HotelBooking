@@ -140,7 +140,7 @@ export default function ReservationsScreen({ navigation }) {
                 style={{ marginTop: 300 }}
               />
               <Text style={{ textAlign: "center" }}>
-                Otelleriniz sunucudan getiriliyor, Lütfen bekleyiniz...
+                Rezervasyonlarınız sunucudan getiriliyor, Lütfen bekleyiniz...
               </Text>
             </>
           ) : hotels.length === 0 ? (

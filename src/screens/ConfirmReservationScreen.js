@@ -8,6 +8,7 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import Button from "../components/Button/Button";
 import {
@@ -24,6 +25,7 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HotelCard from "../components/Card/HotelCard";
 import ReservationCard from "../components/Card/ReservationCard";
+import ConfirmReservationCard from "../components/Card/ConfirmReservationCard";
 
 const getUserHotels = async () => {
   try {
@@ -44,7 +46,7 @@ const getUserHotels = async () => {
       const hotelData = doc.data();
       console.log("Hotel Data:", hotelData);
       const reservationID = doc.id;
-
+      console.log("reservationID", reservationID);
       const firestoreTimestamp = hotelData.enterDate;
       const firestoreTimestampExit = hotelData.exitDate;
 
@@ -76,6 +78,7 @@ const getUserHotels = async () => {
         enterDate: formattedEnterDate,
         exitDate: formattedExitDate,
         status: hotelData.status,
+        reservationID: reservationID,
       });
     }
 
@@ -93,7 +96,25 @@ const getUserHotels = async () => {
 export default function ConfirmReservationScreen({ navigation }) {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    const fetchHotels = async () => {
+      try {
+        const fetchedHotels = await getUserHotels();
+        setHotels(fetchedHotels || []);
+        console.log("hotels", hotels);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+        setHotels([]);
+      }
+    };
+    fetchHotels();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  }, []);
   useEffect(() => {
     const fetchHotels = async () => {
       setLoading(true);
@@ -129,7 +150,12 @@ export default function ConfirmReservationScreen({ navigation }) {
     return unsubscribe;
   }, [navigation, hotels]);
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View>
         <View>
           {loading ? (
@@ -140,7 +166,8 @@ export default function ConfirmReservationScreen({ navigation }) {
                 style={{ marginTop: 300 }}
               />
               <Text style={{ textAlign: "center" }}>
-                Otelleriniz sunucudan getiriliyor, Lütfen bekleyiniz...
+                Rezervasyon talepleri sunucudan getiriliyor, Lütfen
+                bekleyiniz...
               </Text>
             </>
           ) : hotels.length === 0 ? (
@@ -150,20 +177,25 @@ export default function ConfirmReservationScreen({ navigation }) {
           ) : (
             <View>
               {hotels.map((hotel) => (
-                <ReservationCard
+                <ConfirmReservationCard
                   key={hotel.id}
+                  reservationID={hotel.reservationID}
                   status={hotel.status}
                   hotelName={hotel.hotelName}
                   city={hotel.city}
                   enterDate={hotel.enterDate}
                   exitDate={hotel.exitDate}
+                  bookerName={hotel.bookerName}
+                  bookerSurname={hotel.bookerSurname}
+                  bookerEmail={hotel.bookerEmail}
+                  bedCount={hotel.bedCount}
                 />
               ))}
             </View>
           )}
         </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
