@@ -60,7 +60,7 @@ React Native geliştirmek için gerekli araçlara ve ortama sahip olduğunuzdan 
 ### Yükleme
 
 ```bash
-Bu repository'i `git clone mehmetalidemirtas/Fintech-App-32bit` ile klonlayın
+Bu repository'i `git clone https://github.com/mehmetalidemirtas/HotelBooking.git` ile klonlayın
 'cd Fintech-App-32bit' ile proje dizinine gidin
 ```
 
