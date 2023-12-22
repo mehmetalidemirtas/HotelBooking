@@ -4,12 +4,9 @@ import {
   Dimensions,
   FlatList,
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import {
@@ -17,30 +14,20 @@ import {
   collection,
   doc,
   addDoc,
-  setDoc,
   query,
   where,
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import {
-  ref,
-  uploadString,
-  listAll,
-  getDownloadURL,
-  getStorage,
-  uploadBytes,
-} from "firebase/storage";
+import { ref, getDownloadURL, getStorage, uploadBytes } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import StarRating from "../components/Card/StarRating";
 import Button from "../components/Button/Button";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import Input from "../components/Input/Input";
 import { Picker } from "@react-native-picker/picker";
 import citiesInTurkey from "../../assets/cities";
 import Stars from "react-native-stars";
-const { width } = Dimensions.get("window");
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
@@ -85,9 +72,7 @@ export default function EditHotelScreen({ navigation, route }) {
 
       querySnapshot.forEach(async (document) => {
         const hotelIdToDelete = document.id;
-        console.log("hotelIdToDelete::: ", hotelIdToDelete);
         await deleteDoc(doc(db, collectionName, hotelIdToDelete));
-        console.log("Otel belgesi başarıyla silindi");
       });
     } catch (error) {
       console.error("Otel belgesi silinirken bir hata oluştu:", error);
@@ -101,7 +86,6 @@ export default function EditHotelScreen({ navigation, route }) {
     try {
       await deleteHotelByName(JhotelName);
       const uid = await AsyncStorage.getItem("uid");
-      console.log("user credentials:", uid);
       const db = getFirestore();
 
       const hotelsCollectionRef = collection(db, "hotels");
@@ -115,7 +99,6 @@ export default function EditHotelScreen({ navigation, route }) {
       });
 
       const hotelId = newHotelRef.id;
-      console.log("New hotel added with ID:", hotelId);
 
       await uploadImagesToFirebase(hotelId);
 
@@ -252,7 +235,6 @@ export default function EditHotelScreen({ navigation, route }) {
               default={hotelStar}
               update={(val) => {
                 setHotelStar(val);
-                console.log(val);
               }}
               count={5}
               half={false}

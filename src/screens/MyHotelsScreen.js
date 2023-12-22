@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, app } from "../../firebaseConfig";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,8 +14,6 @@ import {
   query,
   where,
   getDocs,
-  getDoc,
-  doc,
 } from "firebase/firestore";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -26,8 +22,6 @@ import HotelCard from "../components/Card/HotelCard";
 const getUserHotels = async () => {
   try {
     const uid = await AsyncStorage.getItem("uid");
-    console.log("user credentials:", uid);
-
     const db = getFirestore();
     const storage = getStorage();
     const hotelsCollectionRef = collection(db, "hotels");
@@ -37,7 +31,6 @@ const getUserHotels = async () => {
 
     for (const doc of querySnapshot.docs) {
       const hotelData = doc.data();
-      console.log("Hotel Data:", hotelData);
       const hotelId = doc.id;
 
       const storageRef = ref(storage, `images/${hotelId}/${uid}`);
@@ -47,8 +40,6 @@ const getUserHotels = async () => {
           return await getDownloadURL(photoRef);
         })
       );
-
-      console.log("Photo URLs for Hotel", hotelId, ":", photoURLs);
       hotelsData.push({
         id: hotelId,
         hotelName: hotelData.hotelName,
@@ -81,7 +72,6 @@ export default function MyHotelsScreen({ navigation }) {
       try {
         const fetchedHotels = await getUserHotels();
         setHotels(fetchedHotels || []);
-        console.log("hotels", hotels);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -98,7 +88,6 @@ export default function MyHotelsScreen({ navigation }) {
         try {
           const fetchedHotels = await getUserHotels();
           setHotels(fetchedHotels || []);
-          console.log("hotels", hotels);
         } catch (error) {
           console.error("Error fetching hotels:", error);
           setHotels([]);

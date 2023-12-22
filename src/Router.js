@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Button } from "react-native";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,7 +15,7 @@ import LoginScreen from "./screens/LoginScreen";
 import MyHotelsScreen from "./screens/MyHotelsScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { signOut } from "firebase/auth";
-import { auth, app } from "../firebaseConfig";
+import { auth } from "../firebaseConfig";
 import AddNewHotelScreen from "./screens/AddNewHotelScreen";
 import HotelDetailsScreen from "./screens/HotelDetailsScreen";
 import EditHotelScreen from "./screens/EditHotelScreen";
@@ -26,7 +25,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const MyHotelsStack = () => {
     return (
@@ -159,7 +157,6 @@ export default function Router() {
     try {
       await AsyncStorage.setItem("isLoggedIn", "true");
       setIsLoggedIn(true);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -274,28 +271,12 @@ export default function Router() {
   const onLogout = async () => {
     signOut(auth)
       .then(() => {
-        console.log("signout");
         setIsLoggedIn(false);
       })
       .catch((error) => {
-        // An error happened.
+        console.error(error);
       });
   };
-
-  const getIsSignedIn = async () => {
-    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-    return isLoggedIn;
-  };
-
-  /* useEffect(() => {
-    const checkIsSignedIn = async () => {
-      const signedIn = await getIsSignedIn();
-      setIsLoggedIn(signedIn);
-    };
-
-    checkIsSignedIn();
-  }, [isLoggedIn]);
- */
 
   return (
     <NavigationContainer>

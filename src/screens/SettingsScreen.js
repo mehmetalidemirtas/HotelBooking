@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import Button from "../components/Button/Button";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, app } from "../../firebaseConfig";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
@@ -21,7 +20,6 @@ export default function SettingsScreen({ navigation }) {
 
         if (userDoc.exists()) {
           const userDatas = userDoc.data();
-          console.log(userDatas);
           setUserData(userData);
           setName(userDatas.name);
           setSurname(userDatas.surname);

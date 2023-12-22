@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, app } from "../../firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
 import { Picker } from "@react-native-picker/picker";
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from "react-native-flash-message";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function RegisterScreen({ navigation }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -24,7 +21,6 @@ export default function RegisterScreen({ navigation }) {
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         const db = getFirestore();
         const userRef = doc(db, "users", user.uid);
         await setDoc(userRef, { isAdmin, name, surname, email });
@@ -41,7 +37,6 @@ export default function RegisterScreen({ navigation }) {
           message: errorMessage,
           type: "info",
         });
-        // ..
       });
   };
 

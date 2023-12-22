@@ -121,7 +121,6 @@ export default function AddNewHotelScreen({ navigation }) {
     setLoading(true);
     try {
       const uid = await AsyncStorage.getItem("uid");
-      console.log("user credentials:", uid);
       const db = getFirestore();
 
       const hotelsCollectionRef = collection(db, "hotels");
@@ -213,7 +212,6 @@ export default function AddNewHotelScreen({ navigation }) {
                 default={2}
                 update={(val) => {
                   setHotelStar(val);
-                  console.log(val);
                 }}
                 count={5}
                 half={false}

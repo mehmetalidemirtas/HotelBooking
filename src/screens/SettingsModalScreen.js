@@ -26,15 +26,15 @@ export default function SettingsModalScreen({ navigation, route }) {
     const uid = await AsyncStorage.getItem("uid");
 
     const db = getFirestore();
-    const washingtonRef = doc(db, "users", uid);
+    const usersRef = doc(db, "users", uid);
 
     if (status === "editName") {
-      await updateDoc(washingtonRef, {
+      await updateDoc(usersRef, {
         name: newName,
       });
       navigation.goBack();
     } else {
-      await updateDoc(washingtonRef, {
+      await updateDoc(usersRef, {
         surname: newSurname,
       });
       navigation.goBack();

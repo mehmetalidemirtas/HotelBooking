@@ -5,18 +5,13 @@ import {
   FlatList,
   Image,
   Pressable,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import StarRating from "../components/Card/StarRating";
 import Button from "../components/Button/Button";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import Input from "../components/Input/Input";
 import { Picker } from "@react-native-picker/picker";
 import {
   getFirestore,
@@ -26,7 +21,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth, app } from "../../firebaseConfig";
+import { app } from "../../firebaseConfig";
 
 const { width } = Dimensions.get("window");
 
@@ -62,7 +57,6 @@ export default function HotelDetailsScreen({ navigation, route }) {
 
     if (userDoc.exists()) {
       const userDatas = userDoc.data();
-      console.log(userDatas);
       setUserData(userData);
       setName(userDatas.name);
       setSurname(userDatas.surname);

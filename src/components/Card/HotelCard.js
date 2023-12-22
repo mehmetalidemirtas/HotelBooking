@@ -28,8 +28,6 @@ const HotelCard = ({
     const fetchIsAdmin = async () => {
       const adminStatus = await getIsAdmin();
       setIsAdmin(adminStatus);
-      console.log("adminStatus: ", adminStatus);
-      console.log(isAdmin);
     };
     fetchIsAdmin();
   }, []);

@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, app } from "../../firebaseConfig";
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import Button from "../components/Button/Button";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import HotelCard from "../components/Card/HotelCard";
 const getHotelPhotos = async (hotelId) => {
   try {
@@ -42,9 +29,6 @@ const getHotelPhotos = async (hotelId) => {
     );
 
     const flattenedPhotoURLs = photoURLs.flat();
-
-    console.log("Photo URLs for Hotel", hotelId, ":", flattenedPhotoURLs);
-
     return flattenedPhotoURLs;
   } catch (error) {
     console.error("Error getting hotel photos:", error);
@@ -54,19 +38,16 @@ const getHotelPhotos = async (hotelId) => {
 const getAllHotels = async () => {
   try {
     const db = getFirestore();
-    const storage = getStorage();
     const hotelsCollectionRef = collection(db, "hotels");
     const querySnapshot = await getDocs(hotelsCollectionRef);
     const hotelsData = [];
 
     for (const doc of querySnapshot.docs) {
       const hotelData = doc.data();
-      console.log("Hotel Data:", hotelData);
       const hotelId = doc.id;
 
       const photoURLs = await getHotelPhotos(hotelId);
 
-      console.log("Photo URLs for Hotel", hotelId, ":", photoURLs);
       hotelsData.push({
         id: hotelId,
         hotelName: hotelData.hotelName,
@@ -99,7 +80,6 @@ export default function AllHotelsScreen({ navigation }) {
       try {
         const fetchedHotels = await getAllHotels();
         setHotels(fetchedHotels || []);
-        console.log("hotels", hotels);
         setLoading(false);
       } catch (error) {
         setLoading(false);

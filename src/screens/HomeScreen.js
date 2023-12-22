@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, app } from "../../firebaseConfig";
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import Button from "../components/Button/Button";
 import {
   getFirestore,
   collection,
   query,
   where,
   getDocs,
-  getDoc,
-  doc,
 } from "firebase/firestore";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,9 +36,6 @@ const getHotelPhotos = async (hotelId) => {
     );
 
     const flattenedPhotoURLs = photoURLs.flat();
-
-    console.log("Photo URLs for Hotel", hotelId, ":", flattenedPhotoURLs);
-
     return flattenedPhotoURLs;
   } catch (error) {
     console.error("Error getting hotel photos:", error);
@@ -68,7 +59,6 @@ const getUserHotels = async () => {
 
     for (const doc of querySnapshot.docs) {
       const hotelData = doc.data();
-      console.log("Hotel Data:", hotelData);
       const hotelId = doc.id;
 
       const photoURLs = await getHotelPhotos(hotelId);
@@ -106,7 +96,6 @@ export default function HomeScreen({ navigation }) {
       try {
         const fetchedHotels = await getUserHotels();
         setHotels(fetchedHotels || []);
-        console.log("hotels", hotels);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -123,7 +112,6 @@ export default function HomeScreen({ navigation }) {
         try {
           const fetchedHotels = await getUserHotels();
           setHotels(fetchedHotels || []);
-          console.log("hotels", hotels);
         } catch (error) {
           console.error("Error fetching hotels:", error);
           setHotels([]);
