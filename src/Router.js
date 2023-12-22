@@ -34,6 +34,7 @@ export default function Router() {
         <Stack.Screen
           name="My Hotels"
           options={{
+            title: "Otellerim",
             presentation: "transparentModal",
           }}
           component={MyHotelsScreen}
@@ -41,13 +42,23 @@ export default function Router() {
         <Stack.Screen
           name="AddNewHotel"
           options={{
+            title: "Yeni Otel Ekle",
             presentation: "transparentModal",
           }}
           component={AddNewHotelScreen}
         />
         <Stack.Screen
+          name="HotelDetails"
+          options={{
+            title: "Rezervasyon Yap",
+            presentation: "transparentModal",
+          }}
+          component={HotelDetailsScreen}
+        />
+        <Stack.Screen
           name="EditHotel"
           options={{
+            title: "Otel Düzenle",
             presentation: "transparentModal",
           }}
           component={EditHotelScreen}
@@ -61,6 +72,7 @@ export default function Router() {
         <Stack.Screen
           name="AllHotels"
           options={{
+            title: "Oteller",
             presentation: "transparentModal",
           }}
           component={AllHotelsScreen}
@@ -68,6 +80,7 @@ export default function Router() {
         <Stack.Screen
           name="HotelDetails"
           options={{
+            title: "Rezervasyon Yap",
             presentation: "transparentModal",
           }}
           component={HotelDetailsScreen}
@@ -75,6 +88,7 @@ export default function Router() {
         <Stack.Screen
           name="EditHotel"
           options={{
+            title: "Otel Düzenle",
             presentation: "transparentModal",
           }}
           component={EditHotelScreen}
@@ -117,6 +131,7 @@ export default function Router() {
         <Stack.Screen
           name="SettingsScreen"
           options={{
+            title: "Ayarlar",
             presentation: "transparentModal",
             headerRight: () => (
               <MaterialIcons
@@ -131,7 +146,10 @@ export default function Router() {
         />
         <Stack.Screen
           name="EditProfile"
-          options={{ presentation: "transparentModal" }}
+          options={{
+            title: "Profili Düzenle",
+            presentation: "transparentModal",
+          }}
           component={SettingsModalScreen}
         />
       </Stack.Navigator>
@@ -152,7 +170,8 @@ export default function Router() {
           name="PopularHotels"
           component={HomeScreen}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
+            title: "Popüler Oteller",
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="star" size={size} color={color} />
             ),
@@ -163,7 +182,8 @@ export default function Router() {
           component={AllHotelsStack}
           options={{
             headerShown: false,
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
+            tabBarLabel: "Oteller",
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="hotel" size={size} color={color} />
             ),
@@ -173,7 +193,9 @@ export default function Router() {
           name="Reservations"
           component={ReservationsScreen}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
+            title: "Rezervasyonlarım",
+            tabBarLabel: "Rezervasyonlarım",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="book" size={size} color={color} />
             ),
@@ -184,8 +206,9 @@ export default function Router() {
           name="Settings"
           component={SettingsStack}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
             headerShown: false,
+            tabBarLabel: "Ayarlar",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
             ),
@@ -202,8 +225,9 @@ export default function Router() {
           name="MyHotelsTab"
           component={MyHotelsStack}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
             headerShown: false,
+            tabBarLabel: "Otellerim",
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="hotel" size={size} color={color} />
             ),
@@ -213,7 +237,9 @@ export default function Router() {
           name="ConfirmReservation"
           component={ConfirmReservationScreen}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
+            title: "Rezervasyon Talepleri",
+            tabBarLabel: "Rezervasyon Talepleri",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="book" size={size} color={color} />
             ),
@@ -223,8 +249,9 @@ export default function Router() {
           name="Settings"
           component={SettingsStack}
           options={{
-            tabBarShowLabel: false,
+            tabBarShowLabel: true,
             headerShown: false,
+            tabBarLabel: "Ayarlar",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
             ),

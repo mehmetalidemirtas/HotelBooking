@@ -13,12 +13,14 @@ import FlashMessage, {
 
 export default function RegisterScreen({ navigation }) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState();
   const [name, setName] = useState();
   const [surname, setSurname] = useState();
   const [password, setPassword] = useState();
 
   const createUser = async () => {
+    setLoading(true);
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -27,9 +29,11 @@ export default function RegisterScreen({ navigation }) {
         const userRef = doc(db, "users", user.uid);
         await setDoc(userRef, { isAdmin, name, surname, email });
         console.log("User data added to Firestore successfully");
+        setLoading(false);
         navigation.navigate("LoginScreen");
       })
       .catch((error) => {
+        setLoading(false);
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
@@ -75,7 +79,7 @@ export default function RegisterScreen({ navigation }) {
           <Picker.Item label="Müşteri" value="false" />
           <Picker.Item label="Otel Sahibi" value="true" />
         </Picker>
-        <Button onPress={createUser} title={"Kayıt Ol"} />
+        <Button onPress={createUser} title={"Kayıt Ol"} loading={loading} />
         <FlashMessage position="top" />
       </View>
     </SafeAreaView>

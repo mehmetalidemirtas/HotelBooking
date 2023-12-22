@@ -79,6 +79,8 @@ const getUserHotels = async () => {
         exitDate: formattedExitDate,
         status: hotelData.status,
         reservationID: reservationID,
+        Jcapacity: hotelData.Jcapacity,
+        roomNo: hotelData.roomNo,
       });
     }
 
@@ -189,6 +191,8 @@ export default function ConfirmReservationScreen({ navigation }) {
                   bookerSurname={hotel.bookerSurname}
                   bookerEmail={hotel.bookerEmail}
                   bedCount={hotel.bedCount}
+                  capacity={hotel.Jcapacity}
+                  roomNo={hotel.roomNo}
                 />
               ))}
             </View>

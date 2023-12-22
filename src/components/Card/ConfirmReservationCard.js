@@ -19,15 +19,27 @@ const ConfirmReservationCard = ({
   enterDate,
   exitDate,
   status,
+  capacity,
   reservationID,
+  roomNo,
 }) => {
+  const generateRoomNumber = (capacity) => {
+    if (capacity === undefined) {
+      capacity = 200;
+    }
+    const randomRoom = Math.floor(Math.random() * capacity) + 1;
+    return randomRoom;
+  };
+
   const updateUser = async () => {
+    const roomNo = generateRoomNumber(capacity);
+    console.log("roomno:", roomNo);
     const db = getFirestore();
-    console.log(reservationID);
     const washingtonRef = doc(db, "reservations", reservationID);
     console.log("washingtonRef", washingtonRef);
     await updateDoc(washingtonRef, {
       status: true,
+      roomNo: roomNo,
     });
     console.log("Güncellendi");
   };
@@ -63,6 +75,19 @@ const ConfirmReservationCard = ({
           Seçilen Oda: {bedCount} Kişilik Oda
         </Text>
       </View>
+      {status !== false && (
+        <View>
+          <Text
+            style={{
+              color: "#5C8374",
+              fontStyle: "italic",
+              fontWeight: "bold",
+            }}
+          >
+            Atanan Oda Numarası: {roomNo}
+          </Text>
+        </View>
+      )}
       <View
         style={{
           flexDirection: "row",
@@ -90,25 +115,28 @@ const ConfirmReservationCard = ({
             </Text>
           </View>
         ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            <AntDesign
-              name="checkcircle"
-              size={24}
-              color="#38E54D"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={{ color: "#38E54D", fontWeight: "bold" }}>
-              Onaylandı
-            </Text>
-          </View>
+          <>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <AntDesign
+                name="checkcircle"
+                size={24}
+                color="#38E54D"
+                style={{ marginRight: 10 }}
+              />
+              <Text style={{ color: "#38E54D", fontWeight: "bold" }}>
+                Onaylandı
+              </Text>
+            </View>
+          </>
         )}
       </View>
+
       {status === false && (
         <Button title={"Talebi Onayla"} onPress={confirmReservationButton} />
       )}

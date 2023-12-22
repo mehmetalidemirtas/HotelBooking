@@ -52,7 +52,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
   const [bookerEmail, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(false);
-
+  const roomNo = 0;
   const getUserData = async () => {
     const uid = await AsyncStorage.getItem("uid");
 
@@ -116,11 +116,13 @@ export default function HotelDetailsScreen({ navigation, route }) {
         bookerEmail,
         JhotelName,
         Jcity,
+        Jcapacity,
         JhotelOwnerUID,
         bedCount,
         enterDate,
         exitDate,
         status,
+        roomNo,
       });
 
       const reservationID = newHotelRef.id;
@@ -142,7 +144,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
             style={{ marginTop: 300 }}
           />
           <Text style={{ textAlign: "center" }}>
-            İşlem gerçekleştiriliyor, Lütfen bekleyiniz...
+            Rezervasyon yapılıyor, Lütfen bekleyiniz...
           </Text>
         </>
       ) : (

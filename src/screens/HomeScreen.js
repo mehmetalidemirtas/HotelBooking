@@ -148,6 +148,10 @@ export default function HomeScreen({ navigation }) {
                 Popüler oteller sunucudan getiriliyor, Lütfen bekleyiniz...
               </Text>
             </>
+          ) : hotels.length === 0 ? (
+            <Text style={{ textAlign: "center", marginTop: 300 }}>
+              Popüler otel bulunmuyor
+            </Text>
           ) : (
             hotels.map((hotel) => (
               <HotelCard

@@ -37,6 +37,7 @@ const handleSignOut = async () => {
 export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -52,8 +53,6 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           await AsyncStorage.setItem("isAdmin", JSON.stringify(isAdminValue));
           const uid = user.uid;
           await AsyncStorage.setItem("uid", uid);
-
-          console.log("userid:", user.uid);
           handleLogin();
         }
       }
@@ -64,6 +63,7 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
   }, []);
 
   const signIn = async () => {
+    setLoading(true);
     await signInWithEmailAndPassword(auth, username, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -80,8 +80,10 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           setIsAdmin(isAdminValue);
         }
         await handleLogin();
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
@@ -133,10 +135,11 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
           value={password}
           onChangeText={(inputText) => setPassword(inputText)}
         />
-        <Button onPress={signIn} title={"Giriş Yap"} />
+        <Button onPress={signIn} title={"Giriş Yap"} loading={loading} />
         <Button
           title={"Kayıt Ol"}
           onPress={() => navigation.navigate("RegisterScreen")}
+          loading={loading}
         />
         <StatusBar style="auto" />
       </View>
