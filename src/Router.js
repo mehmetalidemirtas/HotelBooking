@@ -117,6 +117,14 @@ export default function Router() {
           name="SettingsScreen"
           options={{
             presentation: "transparentModal",
+            headerRight: () => (
+              <MaterialIcons
+                name="logout"
+                size={25}
+                color="black"
+                onPress={onLogout}
+              />
+            ),
           }}
           component={SettingsScreen}
         />
@@ -179,15 +187,6 @@ export default function Router() {
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings" size={size} color={color} />
-            ),
-            headerRight: () => (
-              <MaterialIcons
-                name="logout"
-                size={25}
-                color="black"
-                onPress={onLogout}
-                style={{ marginRight: 10 }}
-              />
             ),
           }}
         />

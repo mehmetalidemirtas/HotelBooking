@@ -23,6 +23,7 @@ import {
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HotelCard from "../components/Card/HotelCard";
+import ReservationCard from "../components/Card/ReservationCard";
 
 const getUserHotels = async () => {
   try {
@@ -42,6 +43,7 @@ const getUserHotels = async () => {
     for (const doc of querySnapshot.docs) {
       const hotelData = doc.data();
       console.log("Hotel Data:", hotelData);
+      const reservationID = doc.id;
 
       const firestoreTimestamp = hotelData.enterDate;
       const firestoreTimestampExit = hotelData.exitDate;
@@ -62,6 +64,7 @@ const getUserHotels = async () => {
       console.log(formattedExitDate);
 
       reservationsData.push({
+        id: reservationID,
         city: hotelData.Jcity,
         hotelName: hotelData.JhotelName,
         hotelOwnerUID: hotelData.JHotelOwnerUID,
@@ -140,8 +143,23 @@ export default function ReservationsScreen({ navigation }) {
                 Otelleriniz sunucudan getiriliyor, Lütfen bekleyiniz...
               </Text>
             </>
+          ) : hotels.length === 0 ? (
+            <Text style={{ textAlign: "center", marginTop: 300 }}>
+              Rezervasyonunuz bulunmuyor
+            </Text>
           ) : (
-            <Text>Rezervasyonlarım</Text>
+            <View>
+              {hotels.map((hotel) => (
+                <ReservationCard
+                  key={hotel.id}
+                  status={hotel.status}
+                  hotelName={hotel.hotelName}
+                  city={hotel.city}
+                  enterDate={hotel.enterDate}
+                  exitDate={hotel.exitDate}
+                />
+              ))}
+            </View>
           )}
         </View>
       </View>

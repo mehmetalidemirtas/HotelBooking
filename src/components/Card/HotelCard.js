@@ -65,7 +65,14 @@ const HotelCard = ({
             resizeMode="cover"
           />
         )}
-        <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 5 }}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 18,
+            marginTop: 5,
+            color: "blue",
+          }}
+        >
           {JhotelName}
         </Text>
         <View
