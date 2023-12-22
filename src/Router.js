@@ -21,6 +21,7 @@ import AddNewHotelScreen from "./screens/AddNewHotelScreen";
 import HotelDetailsScreen from "./screens/HotelDetailsScreen";
 import EditHotelScreen from "./screens/EditHotelScreen";
 import SettingsModalScreen from "./screens/SettingsModalScreen";
+import ConfirmReservationScreen from "./screens/ConfirmReservationScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
@@ -209,8 +210,8 @@ export default function Router() {
           }}
         />
         <Tab.Screen
-          name="Reservations"
-          component={ReservationsScreen}
+          name="ConfirmReservation"
+          component={ConfirmReservationScreen}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: ({ color, size }) => (

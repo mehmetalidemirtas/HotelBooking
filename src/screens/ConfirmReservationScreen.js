@@ -18,39 +18,13 @@ import {
   getDocs,
   getDoc,
   doc,
+  Timestamp,
 } from "firebase/firestore";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HotelCard from "../components/Card/HotelCard";
-const getHotelPhotos = async (hotelId) => {
-  try {
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/${hotelId}`);
-    const allItems = await listAll(storageRef);
+import ReservationCard from "../components/Card/ReservationCard";
 
-    const subfolders = allItems.prefixes;
-
-    const photoURLs = await Promise.all(
-      subfolders.map(async (subfolder) => {
-        const photoList = await listAll(subfolder);
-        return await Promise.all(
-          photoList.items.map(async (photoRef) => {
-            return await getDownloadURL(photoRef);
-          })
-        );
-      })
-    );
-
-    const flattenedPhotoURLs = photoURLs.flat();
-
-    console.log("Photo URLs for Hotel", hotelId, ":", flattenedPhotoURLs);
-
-    return flattenedPhotoURLs;
-  } catch (error) {
-    console.error("Error getting hotel photos:", error);
-    throw error;
-  }
-};
 const getUserHotels = async () => {
   try {
     const uid = await AsyncStorage.getItem("uid");
@@ -58,35 +32,56 @@ const getUserHotels = async () => {
 
     const db = getFirestore();
     const storage = getStorage();
-    const hotelsCollectionRef = collection(db, "hotels");
-    const userHotelsQuery = query(
+    const hotelsCollectionRef = collection(db, "reservations");
+    const userReservationsQuery = query(
       hotelsCollectionRef,
-      where("hotelStar", "==", 5)
+      where("JhotelOwnerUID", "==", uid)
     );
-    const querySnapshot = await getDocs(userHotelsQuery);
-    const hotelsData = [];
+    const querySnapshot = await getDocs(userReservationsQuery);
+    const reservationsData = [];
 
     for (const doc of querySnapshot.docs) {
       const hotelData = doc.data();
       console.log("Hotel Data:", hotelData);
-      const hotelId = doc.id;
+      const reservationID = doc.id;
 
-      const photoURLs = await getHotelPhotos(hotelId);
+      const firestoreTimestamp = hotelData.enterDate;
+      const firestoreTimestampExit = hotelData.exitDate;
 
-      hotelsData.push({
-        id: hotelId,
-        hotelName: hotelData.hotelName,
-        capacity: hotelData.capacity,
-        city: hotelData.city,
-        hotelStar: hotelData.hotelStar,
-        photoURLs: photoURLs,
-        hotelOwnerUID: hotelData.uid,
+      const timestamp = Timestamp.fromMillis(
+        firestoreTimestamp.seconds * 1000 +
+          firestoreTimestamp.nanoseconds / 1000000
+      );
+      const timestampExit = Timestamp.fromMillis(
+        firestoreTimestampExit.seconds * 1000 +
+          firestoreTimestampExit.nanoseconds / 1000000
+      );
+      const date = timestamp.toDate();
+      const dateExit = timestampExit.toDate();
+      const formattedEnterDate = date.toLocaleString("tr-TR");
+      const formattedExitDate = dateExit.toLocaleString("tr-TR");
+      console.log(formattedEnterDate);
+      console.log(formattedExitDate);
+
+      reservationsData.push({
+        id: reservationID,
+        city: hotelData.Jcity,
+        hotelName: hotelData.JhotelName,
+        hotelOwnerUID: hotelData.JHotelOwnerUID,
+        bedCount: hotelData.bedCount,
+        bookerEmail: hotelData.bookerEmail,
+        bookerName: hotelData.bookerName,
+        bookerSurname: hotelData.bookerSurname,
+        bookerUID: hotelData.bookerUID,
+        enterDate: formattedEnterDate,
+        exitDate: formattedExitDate,
+        status: hotelData.status,
       });
     }
 
     console.log("User hotels and photos retrieved from Firestore successfully");
 
-    return hotelsData;
+    return reservationsData;
   } catch (error) {
     console.error(
       "Error retrieving user hotels and photos from Firestore:",
@@ -95,7 +90,7 @@ const getUserHotels = async () => {
     throw error;
   }
 };
-export default function HomeScreen({ navigation }) {
+export default function ConfirmReservationScreen({ navigation }) {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -134,7 +129,7 @@ export default function HomeScreen({ navigation }) {
     return unsubscribe;
   }, [navigation, hotels]);
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View>
         <View>
           {loading ? (
@@ -145,25 +140,30 @@ export default function HomeScreen({ navigation }) {
                 style={{ marginTop: 300 }}
               />
               <Text style={{ textAlign: "center" }}>
-                Popüler oteller sunucudan getiriliyor, Lütfen bekleyiniz...
+                Otelleriniz sunucudan getiriliyor, Lütfen bekleyiniz...
               </Text>
             </>
+          ) : hotels.length === 0 ? (
+            <Text style={{ textAlign: "center", marginTop: 300 }}>
+              Rezervasyon talebi bulunmuyor
+            </Text>
           ) : (
-            hotels.map((hotel) => (
-              <HotelCard
-                key={hotel.id}
-                Jcity={hotel.city}
-                JhotelName={hotel.hotelName}
-                JhotelStar={hotel.hotelStar}
-                JphotoURLs={hotel.photoURLs}
-                Jcapacity={hotel.capacity}
-                JhotelOwnerUID={hotel.hotelOwnerUID}
-              />
-            ))
+            <View>
+              {hotels.map((hotel) => (
+                <ReservationCard
+                  key={hotel.id}
+                  status={hotel.status}
+                  hotelName={hotel.hotelName}
+                  city={hotel.city}
+                  enterDate={hotel.enterDate}
+                  exitDate={hotel.exitDate}
+                />
+              ))}
+            </View>
           )}
         </View>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
