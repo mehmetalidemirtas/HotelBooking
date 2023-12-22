@@ -61,7 +61,7 @@ React Native geliştirmek için gerekli araçlara ve ortama sahip olduğunuzdan 
 
 ```bash
 Bu repository'i `git clone https://github.com/mehmetalidemirtas/HotelBooking.git` ile klonlayın
-'cd Fintech-App-32bit' ile proje dizinine gidin
+'cd HotelBooking' ile proje dizinine gidin
 ```
 
 ### Kurulum
