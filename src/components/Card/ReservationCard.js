@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import StarRating from "./StarRating";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
+import Button from "../Button/Button";
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 const ReservationCard = ({
   city,
   hotelName,
@@ -18,6 +27,27 @@ const ReservationCard = ({
   status,
   roomNo,
 }) => {
+  const cancelReservation = async () => {
+    const uid = await AsyncStorage.getItem("uid");
+    try {
+      const db = getFirestore();
+      const hotelsCollectionRef = collection(db, "reservations");
+      const hotelQuery = query(
+        hotelsCollectionRef,
+        where("JhotelName", "==", hotelName),
+        where("bookerUID", "==", uid)
+      );
+      const querySnapshot = await getDocs(hotelQuery);
+
+      querySnapshot.forEach(async (document) => {
+        const reservationIdToDelete = document.id;
+        await deleteDoc(doc(db, "reservations", reservationIdToDelete));
+      });
+    } catch (error) {
+      console.error("Error decreasing hotel capacity:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{ fontWeight: "bold", fontSize: 18, color: "blue" }}>
@@ -89,6 +119,12 @@ const ReservationCard = ({
           </View>
         )}
       </View>
+      {status === false && (
+        <Button
+          title={"Rezervasyon Talebini İptal Et"}
+          onPress={cancelReservation}
+        />
+      )}
     </View>
   );
 };

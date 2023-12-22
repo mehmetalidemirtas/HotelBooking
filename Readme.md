@@ -26,29 +26,27 @@ Müşteri kullanıcıları ise otelleri listeler, rezervasyon talepleri oluştur
 Müşteriler, istedikleri otellere rezervasyon talebi oluşturabilirler ve iptal edebilirler.
 Otel sahipleri talepleri onayladığında, kullanıcılara otomatik olarak tanımlanan oda numarası gösterilir.
 
-##### Kolay Güncelleme:
+##### Güncelleme:
 
-Otel sahipleri, otel bilgilerini kolayca güncelleyebilir ve potansiyel müşterilere en doğru bilgileri sunabilirler.
+Otel sahipleri, otel bilgilerini güncelleyebilir veya var olan oteli silebilir.
 
 ## Tanıtım
 
 - [Özellikler ve Kullanılmış Teknolojiler](#özellikler-ve-kullanılmış-teknolojiler)
 - [Kullanım](#kullanım)
 - [Katkı](#katkı)
-- [Screenshots](#screenshots)
+- [Ekran Görüntüleri](#ekran-görüntüleri)
 - [Lisans](#lisans)
 
 ## Özellikler ve Kullanılmış Teknolojiler
 
-**1. Websocket:** Track real-time currency exchange rates using a connection established through Websocket.
-
-**2. Async Storage:** User credentials, transaction history, and other data are stored in local storage.
-
-**3. NFC:** During account registration, you can quickly register by scanning your ID card using NFC.
-
-**4. Context API:** Used for managing application state and data flow.
-
-**5. i18next:** You can use the application in different languages such as Turkish and English.
+**1. UI Blocking:** Bir işlem gerçekleştiğinde, bir butona veya herhangi bir işlemin çalıştırılması engellenmiştir
+**2. Firebase:** Bütün otel, rezervasyon ve kullanıcı verileri için firebase kullanılmıştır.
+**3. Authorization ve Authentication:** Kullanıcı giriş çıkış kontrol işlemleri ve yetkilendirme işlemleri gerçekleştirilmiştir.
+**4. Local Notification:** Expo Notification ile kullanıcılara local bildirim gönderme işlemi gerçekleştirilmiştir.
+**5. CRUD:** Veriler üzerinde CRUD işlemleri gerçekleştirilmiştir.
+**6. Router:** React navigaation ile nested router geliştirilmiştir.
+**7. UI:** React bileşenleri ve 3rd party kütüphaneler kullanıldı. Örneğin: flash-message, react-native-stars, image-picker, datetimepicker...
 
 ## Kullanım
 
@@ -79,7 +77,26 @@ veya Expo Go uygulaması ile QR kodu taratarak uygulamayı kendi cihazınızda �
 
 Katkılarınızı bekliyoruz! Herhangi bir öneriniz, hata raporunuz veya özellik isteğiniz varsa lütfen bir 'issue' açın veya bir 'pull request' gönderin.
 
-## Screenshots
+## Ekran Görüntüleri
+
+![](screenshots/0.jpg)
+![](screenshots/1.jpg)
+![](screenshots/2.jpg)
+![](screenshots/3.jpg)
+![](screenshots/4.jpg)
+![](screenshots/5.jpg)
+![](screenshots/5_1.jpg)
+![](screenshots/6.jpg)
+![](screenshots/7.jpg)
+![](screenshots/8.jpg)
+![](screenshots/9.jpg)
+![](screenshots/10.jpg)
+![](screenshots/11.jpg)
+![](screenshots/12.jpg)
+![](screenshots/13.jpg)
+![](screenshots/14.jpg)
+![](screenshots/15.jpg)
+![](screenshots/16.jpg)
 
 ## Lisans
 

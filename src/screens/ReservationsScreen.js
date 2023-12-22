@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import {
   getFirestore,
@@ -79,7 +80,23 @@ const getUserHotels = async () => {
 export default function ReservationsScreen({ navigation }) {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    const fetchHotels = async () => {
+      try {
+        const fetchedHotels = await getUserHotels();
+        setHotels(fetchedHotels || []);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+        setHotels([]);
+      }
+    };
+    fetchHotels();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  }, []);
   useEffect(() => {
     const fetchHotels = async () => {
       setLoading(true);
@@ -113,7 +130,12 @@ export default function ReservationsScreen({ navigation }) {
     return unsubscribe;
   }, [navigation, hotels]);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View>
         <View>
           {loading ? (
