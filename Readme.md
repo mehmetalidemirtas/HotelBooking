@@ -2,7 +2,12 @@
   Otel Rezervasyon Uygulaması
 </h1>
 
-Bu otel rezervasyon uygulaması, müşterilerin otel rezervasyonları yapmalarını ve otel sahiplerinin kendi otellerini yönetmelerini sağlamak için tasarlanmıştır. Uygulama, iki ana kullanıcı türü olan "Müşteri" ve "Otel Sahibi" arasında geçiş yapabilen kullanıcı dostu bir arayüze sahiptir.
+Bu otel rezervasyon uygulaması, müşterilerin otel rezervasyonları yapmalarını ve otel
+sahiplerinin kendi otellerini yönetmelerini sağlamak için tasarlanmıştır. Uygulama, iki ana
+kullanıcı türü olan "Müşteri" ve "Otel Sahibi" arasında geçiş yapabilen kullanıcı dostu bir
+arayüze sahiptir. Otel sahipleri, "Otellerim, Rezervasyon Talepleri, Otel Düzenleme, Otel
+Ekleme, Ayarlar" ekranlarına sahiptir. Müşteri kullanıcıları ise, "Popüler Oteler, Tüm Oteller,
+Rezervasyon Yap, Rezervasyonlarım, Ayarlar" ekranlarına sahiptir.
 
 ### Özellikler
 
@@ -23,12 +28,14 @@ Müşteri kullanıcıları ise otelleri listeler, rezervasyon talepleri oluştur
 
 ##### Rezervasyon İşlemleri:
 
-Müşteriler, istedikleri otellere rezervasyon talebi oluşturabilirler ve iptal edebilirler.
-Otel sahipleri talepleri onayladığında, kullanıcılara otomatik olarak tanımlanan oda numarası gösterilir.
+Müşteriler, istedikleri otellere rezervasyon talebi oluşturabilirler ve iptal edebilirler. Otel
+sahipleri talepleri onayladığında, müşterilere otomatik olarak tanımlanan oda numarası
+gösterilir. Rezervasyon talebi henüz onaylanmamış ise, müşteriler taleplerini iptal edebilirler.
 
 ##### Güncelleme:
 
-Otel sahipleri, otel bilgilerini güncelleyebilir veya var olan oteli silebilir.
+Otel sahipleri, otel bilgilerini güncelleyebilir veya var Otel sahipleri, otel bilgilerini güncelleyebilir veya var olan oteli silebilir. Ayrıca hem müşteri
+hem otel sahibi kullanıcıları kullanıcı bilgilerini güncelleybilir.
 
 ## Tanıtım
 
@@ -40,12 +47,18 @@ Otel sahipleri, otel bilgilerini güncelleyebilir veya var olan oteli silebilir.
 
 ## Özellikler ve Kullanılmış Teknolojiler
 
-**1. UI Blocking:** Bir işlem gerçekleştiğinde, bir butona veya herhangi bir işlemin çalıştırılması engellenmiştir
-**2. Firebase:** Bütün otel, rezervasyon ve kullanıcı verileri için firebase kullanılmıştır.
+**1. UI Blocking:** Bir işlem gerçekleştiğinde, bir butona veya herhangi bir işlemin çalıştırılması engellenmiştir.
+
+**2. Firebase:** Uygulamada yer alan otel, rezervasyon ve kullanıcı verileri için firebase kullanılmıştır.
+
 **3. Authorization ve Authentication:** Kullanıcı giriş çıkış kontrol işlemleri ve yetkilendirme işlemleri gerçekleştirilmiştir.
+
 **4. Local Notification:** Expo Notification ile kullanıcılara local bildirim gönderme işlemi gerçekleştirilmiştir.
+
 **5. CRUD:** Veriler üzerinde CRUD işlemleri gerçekleştirilmiştir.
+
 **6. Router:** React navigaation ile nested router geliştirilmiştir.
+
 **7. UI:** React bileşenleri ve 3rd party kütüphaneler kullanıldı. Örneğin: flash-message, react-native-stars, image-picker, datetimepicker...
 
 ## Kullanım
@@ -55,8 +68,8 @@ React Native geliştirmek için gerekli araçlara ve ortama sahip olduğunuzdan 
 ### Yükleme
 
 ```bash
-Bu repository'i `git clone mehmetalidemirtas/Fintech-App-32bit` ile klonlayın
-'cd Fintech-App-32bit' ile proje dizinine gidin
+Bu repository'i `git clone https://github.com/mehmetalidemirtas/HotelBooking.git` ile klonlayın
+'cd HotelBooking' ile proje dizinine gidin
 ```
 
 ### Kurulum
@@ -79,13 +92,14 @@ Katkılarınızı bekliyoruz! Herhangi bir öneriniz, hata raporunuz veya özell
 
 ## Ekran Görüntüleri
 
-|                         |                         |                          |                         |
-| ----------------------- | ----------------------- | ------------------------ | ----------------------- |
-| ![](screenshots/0.jpg)  | ![](screenshots/1.jpg)  | ![](screenshots/2.jpg)   | ![](screenshots/3.jpg)  |
-| ![](screenshots/4.jpg)  | ![](screenshots/5.jpg)  | ![](screenshots/5_1.jpg) | ![](screenshots/6.jpg)  |
-| ![](screenshots/7.jpg)  | ![](screenshots/8.jpg)  | ![](screenshots/9.jpg)   | ![](screenshots/10.jpg) |
-| ![](screenshots/11.jpg) | ![](screenshots/12.jpg) | ![](screenshots/13.jpg)  | ![](screenshots/14.jpg) |
-| ![](screenshots/15.jpg) | ![](screenshots/16.jpg) |                          |                         |
+|                          |                         |                         |
+| ------------------------ | ----------------------- | ----------------------- |
+| ![](screenshots/0.jpg)   | ![](screenshots/1.jpg)  | ![](screenshots/2.jpg)  |
+| ![](screenshots/3.jpg)   | ![](screenshots/4.jpg)  | ![](screenshots/5.jpg)  |
+| ![](screenshots/5_1.jpg) | ![](screenshots/6.jpg)  | ![](screenshots/7.jpg)  |
+| ![](screenshots/8.jpg)   | ![](screenshots/9.jpg)  | ![](screenshots/10.jpg) |
+| ![](screenshots/11.jpg)  | ![](screenshots/12.jpg) | ![](screenshots/13.jpg) |
+| ![](screenshots/14.jpg)  | ![](screenshots/15.jpg) | ![](screenshots/16.jpg) |
 
 ## Lisans
 
