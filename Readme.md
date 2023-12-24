@@ -2,16 +2,12 @@
   Otel Rezervasyon Uygulaması
 </h1>
 
-<<<<<<< HEAD
 Bu otel rezervasyon uygulaması, müşterilerin otel rezervasyonları yapmalarını ve otel
 sahiplerinin kendi otellerini yönetmelerini sağlamak için tasarlanmıştır. Uygulama, iki ana
 kullanıcı türü olan "Müşteri" ve "Otel Sahibi" arasında geçiş yapabilen kullanıcı dostu bir
 arayüze sahiptir. Otel sahipleri, "Otellerim, Rezervasyon Talepleri, Otel Düzenleme, Otel
 Ekleme, Ayarlar" ekranlarına sahiptir. Müşteri kullanıcıları ise, "Popüler Oteler, Tüm Oteller,
 Rezervasyon Yap, Rezervasyonlarım, Ayarlar" ekranlarına sahiptir.
-=======
-Bu otel rezervasyon uygulaması, müşterilerin otel rezervasyonları yapmalarını ve otel sahiplerinin kendi otellerini yönetmelerini sağlamak için tasarlanmıştır. Uygulama, iki ana kullanıcı türü olan "Müşteri" ve "Otel Sahibi" arasında geçiş yapabilen kullanıcı dostu bir arayüze sahiptir. Otel sahipleri, "Otellerim, Rezervasyon Talepleri, Otel Düzenleme, Otel Ekleme, Ayarlar" ekranlarına sahiptir. Müşteri kullanıcıları ise, "Popüler Oteler, Oteller, Rezervasyon Yap, Rezervasyonlarım, Ayarlar" ekranlarına sahiptir.
->>>>>>> 93cd27d21027a2acdddd1eb723b3adc033523b7f
 
 ### Özellikler
 
@@ -52,7 +48,6 @@ hem otel sahibi kullanıcıları kullanıcı bilgilerini güncelleybilir.
 ## Özellikler ve Kullanılmış Teknolojiler
 
 **1. UI Blocking:** Bir işlem gerçekleştiğinde, bir butona veya herhangi bir işlemin çalıştırılması engellenmiştir.
-<<<<<<< HEAD
 
 **2. Firebase:** Uygulamada yer alan otel, rezervasyon ve kullanıcı verileri için firebase kullanılmıştır.
 
@@ -65,20 +60,7 @@ hem otel sahibi kullanıcıları kullanıcı bilgilerini güncelleybilir.
 **6. Router:** React navigaation ile nested router geliştirilmiştir.
 
 **7. UI:** React bileşenleri ve 3rd party kütüphaneler kullanıldı. Örneğin: flash-message, react-native-stars, image-picker, datetimepicker...
-=======
->>>>>>> 93cd27d21027a2acdddd1eb723b3adc033523b7f
 
-**2. Firebase:** Uygulamada yer alan otel, rezervasyon ve kullanıcı verileri için firebase kullanılmıştır.
-
-**3. Authorization ve Authentication:** Kullanıcı giriş çıkış kontrol işlemleri ve yetkilendirme işlemleri gerçekleştirilmiştir.
-
-**4. Local Notification:** Expo Notification ile kullanıcılara local bildirim gönderme işlemi gerçekleştirilmiştir.
-
-**5. CRUD:** Veriler üzerinde CRUD işlemleri gerçekleştirilmiştir.
-
-**6. Router:** React navigaation ile nested router geliştirilmiştir.
-
-**7. UI:** React bileşenleri ve 3rd party kütüphaneler kullanıldı. Örneğin: flash-message, react-native-stars, image-picker, datetimepicker...
 ## Kullanım
 
 React Native geliştirmek için gerekli araçlara ve ortama sahip olduğunuzdan emin olun.
@@ -100,7 +82,7 @@ Bu repository'i `git clone https://github.com/mehmetalidemirtas/HotelBooking.git
 
 ```bash
 `npm start` komutu ile Metro Bundler'ı başlatın
-Emulatöre bağlanın ve `npx react-native run-android` komutunu çalıştırın
+Emulatöre bağlanın ve `npm run android` komutunu çalıştırın
 veya Expo Go uygulaması ile QR kodu taratarak uygulamayı kendi cihazınızda çalıştırın.
 ```
 
