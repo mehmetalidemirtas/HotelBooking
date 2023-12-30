@@ -66,11 +66,14 @@ const getUserHotels = async () => {
         reservationID: reservationID,
         Jcapacity: hotelData.Jcapacity,
         roomNo: hotelData.roomNo,
+        Jbirkisilikodabaslangic: hotelData.Jbirkisilikodabaslangic,
+        Jbirkisilikodabitis: hotelData.Jbirkisilikodabitis,
+        Jikikisilikodabaslangic: hotelData.Jikikisilikodabaslangic,
+        Jikikisilikodabitis: hotelData.Jikikisilikodabitis,
+        Juckisilikodabaslangic: hotelData.Juckisilikodabaslangic,
+        Juckisilikodabitis: hotelData.Juckisilikodabitis,
       });
     }
-
-    console.log("User hotels and photos retrieved from Firestore successfully");
-
     return reservationsData;
   } catch (error) {
     console.error(
@@ -175,6 +178,12 @@ export default function ConfirmReservationScreen({ navigation }) {
                   bedCount={hotel.bedCount}
                   capacity={hotel.Jcapacity}
                   roomNo={hotel.roomNo}
+                  birkisilikodabaslangic={hotel.Jbirkisilikodabaslangic}
+                  birkisilikodabitis={hotel.Jbirkisilikodabitis}
+                  ikikisilikodabaslangic={hotel.Jikikisilikodabaslangic}
+                  ikikisilikodabitis={hotel.Jikikisilikodabitis}
+                  uckisilikodabaslangic={hotel.Juckisilikodabaslangic}
+                  uckisilikodabitis={hotel.Juckisilikodabitis}
                 />
               ))}
             </View>

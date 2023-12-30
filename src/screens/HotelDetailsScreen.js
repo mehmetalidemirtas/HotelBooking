@@ -33,6 +33,12 @@ export default function HotelDetailsScreen({ navigation, route }) {
     JphotoURLs,
     Jcapacity,
     JhotelOwnerUID,
+    Jbirkisilikodabaslangic,
+    Jbirkisilikodabitis,
+    Jikikisilikodabaslangic,
+    Jikikisilikodabitis,
+    Juckisilikodabaslangic,
+    Juckisilikodabitis,
   } = route.params;
 
   const [enterDate, setEnterDate] = useState(new Date());
@@ -117,6 +123,12 @@ export default function HotelDetailsScreen({ navigation, route }) {
         exitDate,
         status,
         roomNo,
+        Jbirkisilikodabaslangic,
+        Jbirkisilikodabitis,
+        Jikikisilikodabaslangic,
+        Jikikisilikodabitis,
+        Juckisilikodabaslangic,
+        Juckisilikodabitis,
       });
 
       const reservationID = newHotelRef.id;

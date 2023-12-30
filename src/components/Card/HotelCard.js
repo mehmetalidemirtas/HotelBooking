@@ -20,6 +20,12 @@ const HotelCard = ({
   JhotelName,
   Jcapacity,
   JhotelOwnerUID,
+  Jbirkisilikodabaslangic,
+  Jbirkisilikodabitis,
+  Jikikisilikodabaslangic,
+  Jikikisilikodabitis,
+  Juckisilikodabaslangic,
+  Juckisilikodabitis,
 }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -41,6 +47,12 @@ const HotelCard = ({
         JphotoURLs,
         Jcapacity,
         JhotelOwnerUID,
+        Jbirkisilikodabaslangic,
+        Jbirkisilikodabitis,
+        Jikikisilikodabaslangic,
+        Jikikisilikodabitis,
+        Juckisilikodabaslangic,
+        Juckisilikodabitis,
       });
     } else {
       navigation.navigate("EditHotel", {
@@ -50,6 +62,12 @@ const HotelCard = ({
         JphotoURLs,
         Jcapacity,
         JhotelOwnerUID,
+        Jbirkisilikodabaslangic,
+        Jbirkisilikodabitis,
+        Jikikisilikodabaslangic,
+        Jikikisilikodabitis,
+        Juckisilikodabaslangic,
+        Juckisilikodabitis,
       });
     }
   };

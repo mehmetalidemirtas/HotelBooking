@@ -71,11 +71,14 @@ const getUserHotels = async () => {
         hotelStar: hotelData.hotelStar,
         photoURLs: photoURLs,
         hotelOwnerUID: hotelData.uid,
+        birkisilikodabaslangic: hotelData.birkisilikodabaslangic,
+        birkisilikodabitis: hotelData.birkisilikodabitis,
+        ikikisilikodabaslangic: hotelData.ikikisilikodabaslangic,
+        ikikisilikodabitis: hotelData.ikikisilikodabitis,
+        uckisilikodabaslangic: hotelData.uckisilikodabaslangic,
+        uckisilikodabitis: hotelData.uckisilikodabitis,
       });
     }
-
-    console.log("User hotels and photos retrieved from Firestore successfully");
-
     return hotelsData;
   } catch (error) {
     console.error(
@@ -150,6 +153,12 @@ export default function HomeScreen({ navigation }) {
                 JphotoURLs={hotel.photoURLs}
                 Jcapacity={hotel.capacity}
                 JhotelOwnerUID={hotel.hotelOwnerUID}
+                Jbirkisilikodabaslangic={hotel.birkisilikodabaslangic}
+                Jbirkisilikodabitis={hotel.birkisilikodabitis}
+                Jikikisilikodabaslangic={hotel.ikikisilikodabaslangic}
+                Jikikisilikodabitis={hotel.ikikisilikodabitis}
+                Juckisilikodabaslangic={hotel.uckisilikodabaslangic}
+                Juckisilikodabitis={hotel.uckisilikodabitis}
               />
             ))
           )}

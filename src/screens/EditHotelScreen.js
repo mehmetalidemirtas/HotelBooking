@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -32,13 +32,40 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 export default function EditHotelScreen({ navigation, route }) {
-  const { JhotelName, Jcity, JhotelStar, JphotoURLs, Jcapacity } = route.params;
+  const {
+    JhotelName,
+    Jcity,
+    JhotelStar,
+    JphotoURLs,
+    Jcapacity,
+    Jbirkisilikodabaslangic,
+    Jbirkisilikodabitis,
+    Jikikisilikodabaslangic,
+    Jikikisilikodabitis,
+    Juckisilikodabaslangic,
+    Juckisilikodabitis,
+  } = route.params;
   const [city, setCity] = useState(Jcity);
   const [hotelName, setHotelName] = useState(JhotelName);
   const [capacity, setCapacity] = useState(Jcapacity);
   const [hotelStar, setHotelStar] = useState(JhotelStar);
   const [selectedImages, setSelectedImages] = useState(JphotoURLs);
   const [loading, setLoading] = useState(false);
+  const [birkisilikodabaslangic, setBirkisilikodabaslangic] = useState(
+    Jbirkisilikodabaslangic
+  );
+  const [ikikisilikodabaslangic, setIkikisilikodabaslangic] = useState(
+    Jikikisilikodabaslangic
+  );
+  const [uckisilikodabaslangic, setUckisilikodabaslangic] = useState(
+    Juckisilikodabaslangic
+  );
+  const [birkisilikodabitis, setBirkisilikodabitis] =
+    useState(Jbirkisilikodabitis);
+  const [ikikisilikodabitis, setIkikisilikodabitis] =
+    useState(Jikikisilikodabitis);
+  const [uckisilikodabitis, setUckisilikodabitis] =
+    useState(Juckisilikodabitis);
 
   const renderImageItem = ({ item }) => (
     <Image source={{ uri: item }} style={styles.imageItem} />
@@ -49,6 +76,7 @@ export default function EditHotelScreen({ navigation, route }) {
     try {
       await deleteHotelByName(JhotelName);
       setLoading(false);
+      navigation.goBack();
     } catch (error) {
       setLoading(false);
       console.error(
@@ -78,11 +106,63 @@ export default function EditHotelScreen({ navigation, route }) {
       console.error("Otel belgesi silinirken bir hata oluştu:", error);
     }
   };
+  const getReservedRooms = async () => {
+    try {
+      const uid = await AsyncStorage.getItem("uid");
+      const db = getFirestore();
+      const storage = getStorage();
+      const hotelsCollectionRef = collection(db, "reservedRooms");
+      const userHotelsQuery = query(
+        hotelsCollectionRef,
+        where("uid", "==", uid),
+        where("hotelName", "==", JhotelName)
+      );
+      const querySnapshot = await getDocs(userHotelsQuery);
+      const reservedRoomsList = [];
 
+      for (const doc of querySnapshot.docs) {
+        const reservedData = doc.data();
+        reservedRoomsList.push({
+          reservedRoomNo: reservedData.reservedRoomNo,
+        });
+      }
+
+      console.log(
+        "User hotels and photos retrieved from Firestore successfully"
+      );
+      const reservedRooms = reservedRoomsList.map(
+        (item) => item.reservedRoomNo
+      );
+
+      return reservedRooms;
+    } catch (error) {
+      console.error(
+        "Error retrieving user hotels and photos from Firestore:",
+        error
+      );
+      throw error;
+    }
+  };
+  const [reservedRooms, setReservedRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchReservedRooms = async () => {
+      setLoading(true);
+      try {
+        const fetchedReservedRooms = await getReservedRooms();
+        setReservedRooms(fetchedReservedRooms || []);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching reserved rooms:", error);
+        setReservedRooms([]);
+      }
+    };
+
+    fetchReservedRooms();
+  }, []);
   const updateHotel = async () => {
     setLoading(true);
-
-    await deleteHotel();
     try {
       await deleteHotelByName(JhotelName);
       const uid = await AsyncStorage.getItem("uid");
@@ -96,6 +176,12 @@ export default function EditHotelScreen({ navigation, route }) {
         capacity,
         hotelStar,
         city,
+        birkisilikodabaslangic,
+        birkisilikodabitis,
+        ikikisilikodabaslangic,
+        ikikisilikodabitis,
+        uckisilikodabaslangic,
+        uckisilikodabitis,
       });
 
       const hotelId = newHotelRef.id;
@@ -218,6 +304,75 @@ export default function EditHotelScreen({ navigation, route }) {
             value={capacity}
             onChangeText={(inputText) => setCapacity(inputText)}
           />
+          <Text style={{ padding: 10 }}>
+            1 Kişilik Oda Numara Aralığını Giriniz:
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Input
+              placeholder={"Başlangıç Numarası"}
+              value={birkisilikodabaslangic}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setBirkisilikodabaslangic(inputText)}
+            />
+            <Input
+              placeholder={"Bitiş Numarası"}
+              value={birkisilikodabitis}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
+            />
+          </View>
+          <Text style={{ padding: 10 }}>
+            2 Kişilik Oda Numara Aralığını Giriniz:
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Input
+              placeholder={"Başlangıç Numarası"}
+              value={ikikisilikodabaslangic}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setIkikisilikodabaslangic(inputText)}
+            />
+            <Input
+              placeholder={"Bitiş Numarası"}
+              value={ikikisilikodabitis}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
+            />
+          </View>
+          <Text style={{ padding: 10 }}>
+            3 Kişilik Oda Numara Aralığını Giriniz:
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Input
+              placeholder={"Başlangıç Numarası"}
+              value={uckisilikodabaslangic}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setUckisilikodabaslangic(inputText)}
+            />
+            <Input
+              placeholder={"Bitiş Numarası"}
+              value={uckisilikodabitis}
+              keyboardType={"number-pad"}
+              onChangeText={(inputText) => setUckisilikodabitis(inputText)}
+            />
+          </View>
           <Picker
             selectedValue={city}
             onValueChange={(itemValue) => setCity(itemValue)}
@@ -248,6 +403,21 @@ export default function EditHotelScreen({ navigation, route }) {
               }
             />
           </View>
+
+          <Button
+            title="Rezervasyon Durumunu Görüntüle"
+            onPress={() =>
+              navigation.navigate("RoomsStatuses", {
+                birkisilikodabaslangic,
+                birkisilikodabitis,
+                ikikisilikodabaslangic,
+                ikikisilikodabitis,
+                Juckisilikodabaslangic,
+                uckisilikodabitis,
+                reservedRooms,
+              })
+            }
+          />
           <Button title=" Yeni Fotoğraf Seçiniz" onPress={pickImages} />
           <Button title="Bilgileri Güncelle" onPress={updateHotel} />
           <Button title="Oteli Sil" onPress={deleteHotel} />

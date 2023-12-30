@@ -21,6 +21,7 @@ import HotelDetailsScreen from "./screens/HotelDetailsScreen";
 import EditHotelScreen from "./screens/EditHotelScreen";
 import SettingsModalScreen from "./screens/SettingsModalScreen";
 import ConfirmReservationScreen from "./screens/ConfirmReservationScreen";
+import RoomsStatuses from "./screens/RoomsStatuses";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 export default function Router() {
@@ -61,6 +62,14 @@ export default function Router() {
           }}
           component={EditHotelScreen}
         />
+        <Stack.Screen
+          name="RoomsStatuses"
+          options={{
+            title: "Otel Rezervasyon Durumu",
+            presentation: "transparentModal",
+          }}
+          component={RoomsStatuses}
+        />
       </Stack.Navigator>
     );
   };
@@ -90,6 +99,14 @@ export default function Router() {
             presentation: "transparentModal",
           }}
           component={EditHotelScreen}
+        />
+        <Stack.Screen
+          name="RoomsStatuses"
+          options={{
+            title: "Otel Rezervasyon Durumu",
+            presentation: "transparentModal",
+          }}
+          component={RoomsStatuses}
         />
       </Stack.Navigator>
     );

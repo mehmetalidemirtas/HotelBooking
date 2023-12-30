@@ -35,6 +35,12 @@ export default function AddNewHotelScreen({ navigation }) {
   const [hotelStar, setHotelStar] = useState(2);
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [birkisilikodabaslangic, setBirkisilikodabaslangic] = useState(0);
+  const [ikikisilikodabaslangic, setIkikisilikodabaslangic] = useState(0);
+  const [uckisilikodabaslangic, setUckisilikodabaslangic] = useState(0);
+  const [birkisilikodabitis, setBirkisilikodabitis] = useState(0);
+  const [ikikisilikodabitis, setIkikisilikodabitis] = useState(0);
+  const [uckisilikodabitis, setUckisilikodabitis] = useState(0);
   useEffect(() => {
     const requestPermissions = async () => {
       const { granted } = await Notifications.requestPermissionsAsync();
@@ -131,6 +137,12 @@ export default function AddNewHotelScreen({ navigation }) {
         capacity,
         hotelStar,
         city,
+        birkisilikodabaslangic,
+        birkisilikodabitis,
+        ikikisilikodabaslangic,
+        ikikisilikodabitis,
+        uckisilikodabaslangic,
+        uckisilikodabitis,
       });
 
       const hotelId = newHotelRef.id;
@@ -149,6 +161,11 @@ export default function AddNewHotelScreen({ navigation }) {
   const renderImageItem = ({ item }) => (
     <Image source={{ uri: item }} style={styles.imageItem} />
   );
+  const hotelRoomNumbers = Array.from(
+    { length: 1000 },
+    (_, index) => index + 1
+  );
+
   return (
     <ScrollView style={styles.container}>
       {loading ? (
@@ -195,6 +212,81 @@ export default function AddNewHotelScreen({ navigation }) {
               value={capacity}
               onChangeText={(inputText) => setCapacity(inputText)}
             />
+            <Text style={{ padding: 10 }}>
+              1 Kişilik Oda Numara Aralığını Giriniz:
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={birkisilikodabaslangic}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setBirkisilikodabaslangic(inputText)
+                }
+              />
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={birkisilikodabitis}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
+              />
+            </View>
+            <Text style={{ padding: 10 }}>
+              2 Kişilik Oda Numara Aralığını Giriniz:
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={ikikisilikodabaslangic}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setIkikisilikodabaslangic(inputText)
+                }
+              />
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={ikikisilikodabitis}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
+              />
+            </View>
+            <Text style={{ padding: 10 }}>
+              3 Kişilik Oda Numara Aralığını Giriniz:
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={uckisilikodabaslangic}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setUckisilikodabaslangic(inputText)
+                }
+              />
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={uckisilikodabitis}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setUckisilikodabitis(inputText)}
+              />
+            </View>
             <Picker
               selectedValue={city}
               onValueChange={(itemValue) => setCity(itemValue)}

@@ -47,6 +47,12 @@ const getUserHotels = async () => {
         city: hotelData.city,
         hotelStar: hotelData.hotelStar,
         photoURLs: photoURLs,
+        birkisilikodabaslangic: hotelData.birkisilikodabaslangic,
+        birkisilikodabitis: hotelData.birkisilikodabitis,
+        ikikisilikodabaslangic: hotelData.ikikisilikodabaslangic,
+        ikikisilikodabitis: hotelData.ikikisilikodabitis,
+        uckisilikodabaslangic: hotelData.uckisilikodabaslangic,
+        uckisilikodabitis: hotelData.uckisilikodabitis,
       });
     }
 
@@ -126,6 +132,12 @@ export default function MyHotelsScreen({ navigation }) {
                   JhotelStar={hotel.hotelStar}
                   JphotoURLs={hotel.photoURLs}
                   Jcapacity={hotel.capacity}
+                  Jbirkisilikodabaslangic={hotel.birkisilikodabaslangic}
+                  Jbirkisilikodabitis={hotel.birkisilikodabitis}
+                  Jikikisilikodabaslangic={hotel.ikikisilikodabaslangic}
+                  Jikikisilikodabitis={hotel.ikikisilikodabitis}
+                  Juckisilikodabaslangic={hotel.uckisilikodabaslangic}
+                  Juckisilikodabitis={hotel.uckisilikodabitis}
                 />
               ))
             )}

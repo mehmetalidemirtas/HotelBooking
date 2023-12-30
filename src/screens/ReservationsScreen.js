@@ -65,9 +65,6 @@ const getUserHotels = async () => {
         roomNo: hotelData.roomNo,
       });
     }
-
-    console.log("User hotels and photos retrieved from Firestore successfully");
-
     return reservationsData;
   } catch (error) {
     console.error(

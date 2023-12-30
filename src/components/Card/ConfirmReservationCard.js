@@ -13,6 +13,7 @@ import {
   getDoc,
   doc,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -31,12 +32,57 @@ const ConfirmReservationCard = ({
   capacity,
   reservationID,
   roomNo,
+  birkisilikodabaslangic,
+  birkisilikodabitis,
+  ikikisilikodabaslangic,
+  ikikisilikodabitis,
+  uckisilikodabaslangic,
+  uckisilikodabitis,
 }) => {
   const [loading, setLoading] = useState(false);
-  const generateRoomNumber = (capacity) => {
-    const randomRoom = Math.floor(Math.random() * capacity) + 1;
-    return randomRoom;
-  };
+  function generateRandomRoomNo({
+    bedCount,
+    birkisilikodabaslangic,
+    birkisilikodabitis,
+    ikikisilikodabaslangic,
+    ikikisilikodabitis,
+    uckisilikodabaslangic,
+    uckisilikodabitis,
+  }) {
+    console.log(
+      "test:",
+      bedCount,
+      birkisilikodabaslangic,
+      birkisilikodabitis,
+      ikikisilikodabaslangic,
+      ikikisilikodabitis,
+      uckisilikodabaslangic,
+      uckisilikodabitis
+    );
+    const getRandomNumber = (min, max) =>
+      Math.floor(Math.random() * (max - min + 1)) + min;
+
+    let generatedRoomNumber = null;
+
+    if (bedCount === "1") {
+      generatedRoomNumber = getRandomNumber(
+        Math.min(birkisilikodabaslangic, birkisilikodabitis),
+        Math.max(birkisilikodabaslangic, birkisilikodabitis)
+      );
+    } else if (bedCount === "2") {
+      generatedRoomNumber = getRandomNumber(
+        Math.min(ikikisilikodabaslangic, ikikisilikodabitis),
+        Math.max(ikikisilikodabaslangic, ikikisilikodabitis)
+      );
+    } else if (bedCount === "3") {
+      generatedRoomNumber = getRandomNumber(
+        Math.min(uckisilikodabaslangic, uckisilikodabitis),
+        Math.max(uckisilikodabaslangic, uckisilikodabitis)
+      );
+    }
+    console.log("generatedRoomNumber: ", generatedRoomNumber);
+    return generatedRoomNumber;
+  }
 
   async function decreaseHotelCapacity(hotelName) {
     setLoading(true);
@@ -65,9 +111,45 @@ const ConfirmReservationCard = ({
       console.error("Error decreasing hotel capacity:", error);
     }
   }
+  const AddReservedRoom = async (roomNo) => {
+    setLoading(true);
+    try {
+      const uid = await AsyncStorage.getItem("uid");
+      const db = getFirestore();
+
+      const reservedRoomsRef = collection(db, "reservedRooms");
+
+      await addDoc(reservedRoomsRef, {
+        uid,
+        hotelName,
+        bedCount,
+        birkisilikodabaslangic,
+        birkisilikodabitis,
+        ikikisilikodabaslangic,
+        ikikisilikodabitis,
+        uckisilikodabaslangic,
+        uckisilikodabitis,
+        reservedRoomNo: roomNo,
+      });
+
+      console.log("Hotel data and images added to Firestore successfully");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding hotel data and images to Firestore:", error);
+    }
+  };
   const updateReservation = async () => {
     setLoading(true);
-    const roomNo = generateRoomNumber(capacity);
+
+    const roomNo = generateRandomRoomNo({
+      bedCount,
+      birkisilikodabaslangic,
+      birkisilikodabitis,
+      ikikisilikodabaslangic,
+      ikikisilikodabitis,
+      uckisilikodabaslangic,
+      uckisilikodabitis,
+    });
     const db = getFirestore();
     const washingtonRef = doc(db, "reservations", reservationID);
     await updateDoc(washingtonRef, {
@@ -75,6 +157,7 @@ const ConfirmReservationCard = ({
       roomNo: roomNo,
     });
     decreaseHotelCapacity(hotelName);
+    AddReservedRoom(roomNo);
     setLoading(false);
   };
 
