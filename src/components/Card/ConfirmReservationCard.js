@@ -49,16 +49,6 @@ const ConfirmReservationCard = ({
     uckisilikodabaslangic,
     uckisilikodabitis,
   }) {
-    console.log(
-      "test:",
-      bedCount,
-      birkisilikodabaslangic,
-      birkisilikodabitis,
-      ikikisilikodabaslangic,
-      ikikisilikodabitis,
-      uckisilikodabaslangic,
-      uckisilikodabitis
-    );
     const getRandomNumber = (min, max) =>
       Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -80,7 +70,6 @@ const ConfirmReservationCard = ({
         Math.max(uckisilikodabaslangic, uckisilikodabitis)
       );
     }
-    console.log("generatedRoomNumber: ", generatedRoomNumber);
     return generatedRoomNumber;
   }
 
@@ -130,6 +119,7 @@ const ConfirmReservationCard = ({
         uckisilikodabaslangic,
         uckisilikodabitis,
         reservedRoomNo: roomNo,
+        bookerUID,
       });
 
       console.log("Hotel data and images added to Firestore successfully");

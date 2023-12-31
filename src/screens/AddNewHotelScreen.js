@@ -207,11 +207,7 @@ export default function AddNewHotelScreen({ navigation }) {
               value={hotelName}
               onChangeText={(inputText) => setHotelName(inputText)}
             />
-            <Input
-              placeholder={"Kapasite giriniz"}
-              value={capacity}
-              onChangeText={(inputText) => setCapacity(inputText)}
-            />
+
             <Text style={{ padding: 10 }}>
               1 Kişilik Oda Numara Aralığını Giriniz:
             </Text>
@@ -222,20 +218,24 @@ export default function AddNewHotelScreen({ navigation }) {
                 justifyContent: "space-between",
               }}
             >
-              <Input
-                placeholder={"Başlangıç Numarası"}
-                value={birkisilikodabaslangic}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) =>
-                  setBirkisilikodabaslangic(inputText)
-                }
-              />
-              <Input
-                placeholder={"Bitiş Numarası"}
-                value={birkisilikodabitis}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
-              />
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Başlangıç Numarası"}
+                  value={birkisilikodabaslangic.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) =>
+                    setBirkisilikodabaslangic(inputText)
+                  }
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Bitiş Numarası"}
+                  value={birkisilikodabitis.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
+                />
+              </View>
             </View>
             <Text style={{ padding: 10 }}>
               2 Kişilik Oda Numara Aralığını Giriniz:
@@ -247,20 +247,24 @@ export default function AddNewHotelScreen({ navigation }) {
                 justifyContent: "space-between",
               }}
             >
-              <Input
-                placeholder={"Başlangıç Numarası"}
-                value={ikikisilikodabaslangic}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) =>
-                  setIkikisilikodabaslangic(inputText)
-                }
-              />
-              <Input
-                placeholder={"Bitiş Numarası"}
-                value={ikikisilikodabitis}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
-              />
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Başlangıç Numarası"}
+                  value={ikikisilikodabaslangic.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) =>
+                    setIkikisilikodabaslangic(inputText)
+                  }
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Bitiş Numarası"}
+                  value={ikikisilikodabitis.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
+                />
+              </View>
             </View>
             <Text style={{ padding: 10 }}>
               3 Kişilik Oda Numara Aralığını Giriniz:
@@ -272,20 +276,24 @@ export default function AddNewHotelScreen({ navigation }) {
                 justifyContent: "space-between",
               }}
             >
-              <Input
-                placeholder={"Başlangıç Numarası"}
-                value={uckisilikodabaslangic}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) =>
-                  setUckisilikodabaslangic(inputText)
-                }
-              />
-              <Input
-                placeholder={"Bitiş Numarası"}
-                value={uckisilikodabitis}
-                keyboardType={"number-pad"}
-                onChangeText={(inputText) => setUckisilikodabitis(inputText)}
-              />
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Başlangıç Numarası"}
+                  value={uckisilikodabaslangic.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) =>
+                    setUckisilikodabaslangic(inputText)
+                  }
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Input
+                  placeholder={"Bitiş Numarası"}
+                  value={uckisilikodabitis.toString()}
+                  keyboardType={"number-pad"}
+                  onChangeText={(inputText) => setUckisilikodabitis(inputText)}
+                />
+              </View>
             </View>
             <Picker
               selectedValue={city}

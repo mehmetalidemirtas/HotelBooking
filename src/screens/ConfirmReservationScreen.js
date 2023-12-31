@@ -184,6 +184,7 @@ export default function ConfirmReservationScreen({ navigation }) {
                   ikikisilikodabitis={hotel.Jikikisilikodabitis}
                   uckisilikodabaslangic={hotel.Juckisilikodabaslangic}
                   uckisilikodabitis={hotel.Juckisilikodabitis}
+                  bookerUID={hotel.bookerUID}
                 />
               ))}
             </View>

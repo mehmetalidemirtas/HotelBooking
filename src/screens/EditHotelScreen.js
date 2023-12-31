@@ -44,6 +44,7 @@ export default function EditHotelScreen({ navigation, route }) {
     Jikikisilikodabitis,
     Juckisilikodabaslangic,
     Juckisilikodabitis,
+    bookerUID,
   } = route.params;
   const [city, setCity] = useState(Jcity);
   const [hotelName, setHotelName] = useState(JhotelName);
@@ -124,17 +125,16 @@ export default function EditHotelScreen({ navigation, route }) {
         const reservedData = doc.data();
         reservedRoomsList.push({
           reservedRoomNo: reservedData.reservedRoomNo,
+          bookerUID: reservedData.bookerUID,
         });
       }
 
       console.log(
         "User hotels and photos retrieved from Firestore successfully"
       );
-      const reservedRooms = reservedRoomsList.map(
-        (item) => item.reservedRoomNo
-      );
+      console.log(reservedRoomsList);
 
-      return reservedRooms;
+      return reservedRoomsList;
     } catch (error) {
       console.error(
         "Error retrieving user hotels and photos from Firestore:",
@@ -299,11 +299,7 @@ export default function EditHotelScreen({ navigation, route }) {
             value={hotelName}
             onChangeText={(inputText) => setHotelName(inputText)}
           />
-          <Input
-            placeholder={"Yeni kapasite giriniz"}
-            value={capacity}
-            onChangeText={(inputText) => setCapacity(inputText)}
-          />
+
           <Text style={{ padding: 10 }}>
             1 Kişilik Oda Numara Aralığını Giriniz:
           </Text>
@@ -314,18 +310,24 @@ export default function EditHotelScreen({ navigation, route }) {
               justifyContent: "space-between",
             }}
           >
-            <Input
-              placeholder={"Başlangıç Numarası"}
-              value={birkisilikodabaslangic}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setBirkisilikodabaslangic(inputText)}
-            />
-            <Input
-              placeholder={"Bitiş Numarası"}
-              value={birkisilikodabitis}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
-            />
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={birkisilikodabaslangic.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setBirkisilikodabaslangic(inputText)
+                }
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={birkisilikodabitis.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setBirkisilikodabitis(inputText)}
+              />
+            </View>
           </View>
           <Text style={{ padding: 10 }}>
             2 Kişilik Oda Numara Aralığını Giriniz:
@@ -337,18 +339,24 @@ export default function EditHotelScreen({ navigation, route }) {
               justifyContent: "space-between",
             }}
           >
-            <Input
-              placeholder={"Başlangıç Numarası"}
-              value={ikikisilikodabaslangic}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setIkikisilikodabaslangic(inputText)}
-            />
-            <Input
-              placeholder={"Bitiş Numarası"}
-              value={ikikisilikodabitis}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
-            />
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={ikikisilikodabaslangic.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setIkikisilikodabaslangic(inputText)
+                }
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={ikikisilikodabitis.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setIkikisilikodabitis(inputText)}
+              />
+            </View>
           </View>
           <Text style={{ padding: 10 }}>
             3 Kişilik Oda Numara Aralığını Giriniz:
@@ -360,18 +368,24 @@ export default function EditHotelScreen({ navigation, route }) {
               justifyContent: "space-between",
             }}
           >
-            <Input
-              placeholder={"Başlangıç Numarası"}
-              value={uckisilikodabaslangic}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setUckisilikodabaslangic(inputText)}
-            />
-            <Input
-              placeholder={"Bitiş Numarası"}
-              value={uckisilikodabitis}
-              keyboardType={"number-pad"}
-              onChangeText={(inputText) => setUckisilikodabitis(inputText)}
-            />
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Başlangıç Numarası"}
+                value={uckisilikodabaslangic.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) =>
+                  setUckisilikodabaslangic(inputText)
+                }
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Input
+                placeholder={"Bitiş Numarası"}
+                value={uckisilikodabitis.toString()}
+                keyboardType={"number-pad"}
+                onChangeText={(inputText) => setUckisilikodabitis(inputText)}
+              />
+            </View>
           </View>
           <Picker
             selectedValue={city}
@@ -405,7 +419,7 @@ export default function EditHotelScreen({ navigation, route }) {
           </View>
 
           <Button
-            title="Rezervasyon Durumunu Görüntüle"
+            title="Oda Durumunu Görüntüle"
             onPress={() =>
               navigation.navigate("RoomsStatuses", {
                 birkisilikodabaslangic,
@@ -415,6 +429,7 @@ export default function EditHotelScreen({ navigation, route }) {
                 Juckisilikodabaslangic,
                 uckisilikodabitis,
                 reservedRooms,
+                bookerUID,
               })
             }
           />
