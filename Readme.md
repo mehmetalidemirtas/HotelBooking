@@ -20,6 +20,7 @@ Otel sahipleri, otellerini tanıtmak için özel hesaplarını oluşturabilirler
 
 Otel sahipleri, kendi otellerini ekleyebilir, güncelleyebilir ve rezervasyon taleplerini yönetebilirler.
 Rezervasyon taleplerini onayladıklarında, sistem otomatik olarak oda numarasını tanımlar.
+Ayrıca Otel sahibi, her otelin oda durumunu, odada kalan müşterilerin bilgilerini görüntüleyebilmektedir.
 
 ##### Farklı Arayüzler:
 
@@ -41,6 +42,7 @@ hem otel sahibi kullanıcıları kullanıcı bilgilerini güncelleybilir.
 
 - [Özellikler ve Kullanılmış Teknolojiler](#özellikler-ve-kullanılmış-teknolojiler)
 - [Kullanım](#kullanım)
+- [Test](#test)
 - [Katkı](#katkı)
 - [Ekran Görüntüleri](#ekran-görüntüleri)
 - [Lisans](#lisans)
@@ -86,20 +88,28 @@ Emulatöre bağlanın ve `npm run android` komutunu çalıştırın
 veya Expo Go uygulaması ile QR kodu taratarak uygulamayı kendi cihazınızda çalıştırın.
 ```
 
+## Test
+
+Uygulamada iki hedef kullanıcı tipi vardır. Bunlar Müşteri ve Otel Sahibidir.
+Müşteri ekranlarını test etmek için "musteri@gmail.com" email adresi ve "123456" şifresi ile test edebilirsiniz.
+Otel Sahibi ekranlarını test etmek için "otelsahibi@gmail.com" email adresi ve "123456" şifresi ile test edebilirsiniz.
+
 ## Katkı
 
 Katkılarınızı bekliyoruz! Herhangi bir öneriniz, hata raporunuz veya özellik isteğiniz varsa lütfen bir 'issue' açın veya bir 'pull request' gönderin.
 
 ## Ekran Görüntüleri
 
-|                          |                         |                         |
-| ------------------------ | ----------------------- | ----------------------- |
-| ![](screenshots/0.jpg)   | ![](screenshots/1.jpg)  | ![](screenshots/2.jpg)  |
-| ![](screenshots/3.jpg)   | ![](screenshots/4.jpg)  | ![](screenshots/5.jpg)  |
-| ![](screenshots/5_1.jpg) | ![](screenshots/6.jpg)  | ![](screenshots/7.jpg)  |
-| ![](screenshots/8.jpg)   | ![](screenshots/9.jpg)  | ![](screenshots/10.jpg) |
-| ![](screenshots/11.jpg)  | ![](screenshots/12.jpg) | ![](screenshots/13.jpg) |
-| ![](screenshots/14.jpg)  | ![](screenshots/15.jpg) | ![](screenshots/16.jpg) |
+|                          |                          |                           |
+| ------------------------ | ------------------------ | ------------------------- |
+| ![](screenshots/0.jpg)   | ![](screenshots/1.jpg)   | ![](screenshots/2.jpg)    |
+| ![](screenshots/3.jpg)   | ![](screenshots/4.jpg)   | ![](screenshots/5.jpg)    |
+| ![](screenshots/5_1.jpg) | ![](screenshots/6.jpg)   | ![](screenshots/7.jpg)    |
+| ![](screenshots/8.jpg)   | ![](screenshots/8_1.jpg) | ![](screenshots/8_2.jpg)  |
+| ![](screenshots/8_3.jpg) | ![](screenshots/8_4.jpg) | ![](screenshots/8_5.jpg)  |
+| ![](screenshots/9.jpg)   | ![](screenshots/10.jpg)  | ![](screenshots/11.jpg)   |
+| ![](screenshots/12.jpg)  | ![](screenshots/13.jpg)  | ![](screenshots/13_1.jpg) |
+| ![](screenshots/14.jpg)  | ![](screenshots/15.jpg)  | ![](screenshots/16.jpg)   |
 
 ## Lisans
 

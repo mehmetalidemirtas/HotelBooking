@@ -74,7 +74,7 @@ export default function LoginScreen({ navigation, handleLogin, setIsAdmin }) {
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
         showMessage({
-          message: errorCode,
+          message: errorMessage,
           type: "danger",
         });
       });

@@ -6,7 +6,6 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import Input from "../components/Input/Input";
 import Button from "../components/Button/Button";
 import { Picker } from "@react-native-picker/picker";
-import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function RegisterScreen({ navigation }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -15,9 +14,11 @@ export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState();
   const [surname, setSurname] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState(null);
 
   const createUser = async () => {
     setLoading(true);
+    setError(null);
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -33,10 +34,7 @@ export default function RegisterScreen({ navigation }) {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
-        showMessage({
-          message: errorMessage,
-          type: "info",
-        });
+        setError(errorMessage);
       });
   };
 
@@ -75,7 +73,9 @@ export default function RegisterScreen({ navigation }) {
           <Picker.Item label="Otel Sahibi" value="true" />
         </Picker>
         <Button onPress={createUser} title={"Kayıt Ol"} loading={loading} />
-        <FlashMessage position="top" />
+        {error && (
+          <Text style={{ textAlign: "center", color: "red" }}>{error}</Text>
+        )}
       </View>
     </SafeAreaView>
   );
