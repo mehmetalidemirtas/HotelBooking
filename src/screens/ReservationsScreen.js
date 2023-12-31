@@ -78,17 +78,21 @@ export default function ReservationsScreen({ navigation }) {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  7;
+  const fetchHotels = async () => {
+    try {
+      const fetchedHotels = await getUserHotels();
+      setHotels(fetchedHotels || []);
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+      setHotels([]);
+    }
+  };
+  const handleRerender = React.useCallback(() => {
+    fetchHotels();
+  }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    const fetchHotels = async () => {
-      try {
-        const fetchedHotels = await getUserHotels();
-        setHotels(fetchedHotels || []);
-      } catch (error) {
-        console.error("Error fetching hotels:", error);
-        setHotels([]);
-      }
-    };
     fetchHotels();
     setTimeout(() => {
       setRefreshing(false);
@@ -161,6 +165,7 @@ export default function ReservationsScreen({ navigation }) {
                   enterDate={hotel.enterDate}
                   exitDate={hotel.exitDate}
                   roomNo={hotel.roomNo}
+                  handleRerender={handleRerender}
                 />
               ))}
             </View>

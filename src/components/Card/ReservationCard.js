@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
@@ -23,11 +23,15 @@ const ReservationCard = ({
   bookerSurname,
   bookerUID,
   enterDate,
+  handleRerender,
   exitDate,
   status,
   roomNo,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const cancelReservation = async () => {
+    setLoading(true);
     const uid = await AsyncStorage.getItem("uid");
     try {
       const db = getFirestore();
@@ -43,89 +47,98 @@ const ReservationCard = ({
         const reservationIdToDelete = document.id;
         await deleteDoc(doc(db, "reservations", reservationIdToDelete));
       });
+      setLoading(false);
+      setDeleted(true);
     } catch (error) {
+      setLoading(false);
+      handleRerender();
       console.error("Error decreasing hotel capacity:", error);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontWeight: "bold", fontSize: 18, color: "blue" }}>
-        {hotelName}
-      </Text>
+    <>
+      {deleted !== true && (
+        <View style={styles.container}>
+          <Text style={{ fontWeight: "bold", fontSize: 18, color: "blue" }}>
+            {hotelName}
+          </Text>
 
-      <View style={{ marginVertical: 10 }}>
-        <Text>Giriş Tarihi: {enterDate}</Text>
-        <Text>Çıkış Tarihi: {exitDate}</Text>
-      </View>
-      {status !== false && (
-        <View>
-          <Text
+          <View style={{ marginVertical: 10 }}>
+            <Text>Giriş Tarihi: {enterDate}</Text>
+            <Text>Çıkış Tarihi: {exitDate}</Text>
+          </View>
+          {status !== false && (
+            <View>
+              <Text
+                style={{
+                  color: "#5C8374",
+                  fontStyle: "italic",
+                  fontWeight: "bold",
+                  marginBottom: 10,
+                }}
+              >
+                Sizin İçin Tanımlanan Oda Numarası: {roomNo}
+              </Text>
+            </View>
+          )}
+          <View
             style={{
-              color: "#5C8374",
-              fontStyle: "italic",
-              fontWeight: "bold",
-              marginBottom: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 2,
             }}
           >
-            Sizin İçin Tanımlanan Oda Numarası: {roomNo}
-          </Text>
+            <Text style={styles.city}>Konum: {city}</Text>
+            {status === false ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <AntDesign
+                  name="clockcircle"
+                  size={24}
+                  color="red"
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ color: "red", fontWeight: "bold" }}>
+                  Onay bekliyor
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <AntDesign
+                  name="checkcircle"
+                  size={24}
+                  color="#38E54D"
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={{ color: "#38E54D", fontWeight: "bold" }}>
+                  Onaylandı
+                </Text>
+              </View>
+            )}
+          </View>
+          {status === false && (
+            <Button
+              title={"Rezervasyon Talebini İptal Et"}
+              onPress={cancelReservation}
+              loading={loading}
+            />
+          )}
         </View>
       )}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginTop: 2,
-        }}
-      >
-        <Text style={styles.city}>Konum: {city}</Text>
-        {status === false ? (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            <AntDesign
-              name="clockcircle"
-              size={24}
-              color="red"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={{ color: "red", fontWeight: "bold" }}>
-              Onay bekliyor
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            <AntDesign
-              name="checkcircle"
-              size={24}
-              color="#38E54D"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={{ color: "#38E54D", fontWeight: "bold" }}>
-              Onaylandı
-            </Text>
-          </View>
-        )}
-      </View>
-      {status === false && (
-        <Button
-          title={"Rezervasyon Talebini İptal Et"}
-          onPress={cancelReservation}
-        />
-      )}
-    </View>
+    </>
   );
 };
 const styles = StyleSheet.create({

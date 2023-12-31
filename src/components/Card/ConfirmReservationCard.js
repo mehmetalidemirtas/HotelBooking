@@ -40,6 +40,12 @@ const ConfirmReservationCard = ({
   uckisilikodabitis,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  useEffect(() => {
+    if (status === true) {
+      setConfirmed(false);
+    }
+  });
   function generateRandomRoomNo({
     bedCount,
     birkisilikodabaslangic,
@@ -149,6 +155,7 @@ const ConfirmReservationCard = ({
     decreaseHotelCapacity(hotelName);
     AddReservedRoom(roomNo);
     setLoading(false);
+    setConfirmed(true);
   };
 
   const confirmReservationButton = () => {
@@ -250,6 +257,8 @@ const ConfirmReservationCard = ({
           loading={loading}
         />
       )}
+
+      {confirmed && <Text>Onaylandı, Sayfayı Yenileyiniz...</Text>}
     </View>
   );
 };

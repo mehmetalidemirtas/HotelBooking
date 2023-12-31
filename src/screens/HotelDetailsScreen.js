@@ -135,7 +135,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
       const reservationID = newHotelRef.id;
       console.log("New reservation added with ID:", reservationID);
       setLoading(false);
-      navigation.navigate("AllHotels");
+      navigation.goBack();
     } catch (error) {
       console.error("Error adding hotel data and images to Firestore:", error);
     }
