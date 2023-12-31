@@ -111,6 +111,44 @@ export default function Router() {
       </Stack.Navigator>
     );
   };
+  const PopularHotelsStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="PopularHotels"
+          options={{
+            title: "Oteller",
+            presentation: "transparentModal",
+          }}
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          name="HotelDetails"
+          options={{
+            title: "Rezervasyon Yap",
+            presentation: "transparentModal",
+          }}
+          component={HotelDetailsScreen}
+        />
+        <Stack.Screen
+          name="EditHotel"
+          options={{
+            title: "Otel Düzenle",
+            presentation: "transparentModal",
+          }}
+          component={EditHotelScreen}
+        />
+        <Stack.Screen
+          name="RoomsStatuses"
+          options={{
+            title: "Otel Rezervasyon Durumu",
+            presentation: "transparentModal",
+          }}
+          component={RoomsStatuses}
+        />
+      </Stack.Navigator>
+    );
+  };
   const LoginStack = () => {
     return (
       <Stack.Navigator
@@ -182,11 +220,12 @@ export default function Router() {
     return (
       <Tab.Navigator>
         <Tab.Screen
-          name="PopularHotels"
-          component={HomeScreen}
+          name="PopularHotelsStack"
+          component={PopularHotelsStack}
           options={{
             tabBarShowLabel: true,
-            title: "Popüler Oteller",
+            headerShown: false,
+            tabBarLabel: "Popüler Oteller",
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="star" size={size} color={color} />
             ),

@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -141,7 +142,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {loading ? (
         <>
           <ActivityIndicator
@@ -155,38 +156,45 @@ export default function HotelDetailsScreen({ navigation, route }) {
         </>
       ) : (
         <>
-          {JphotoURLs.length > 0 && (
-            <View
-              style={{
-                margin: 15,
-                marginBottom: 10,
-                justifyContent: "center",
-              }}
-            >
-              <FlatList
-                data={JphotoURLs}
-                renderItem={renderImageItem}
-                keyExtractor={(item, index) => index.toString()}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-              />
+          <View
+            style={{ backgroundColor: "#eee", margin: 10, borderRadius: 20 }}
+          >
+            {JphotoURLs.length > 0 && (
+              <View
+                style={{
+                  margin: 15,
+                  marginBottom: 10,
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+              >
+                <FlatList
+                  data={JphotoURLs}
+                  renderItem={renderImageItem}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            )}
+            <View style={{ margin: 15, marginTop: 0 }}>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                {JhotelName}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.city}>Konum: {Jcity}</Text>
+                <StarRating rating={JhotelStar} />
+              </View>
             </View>
-          )}
-          <View style={{ margin: 15 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              {JhotelName}
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.city}>Konum: {Jcity}</Text>
-              <StarRating rating={JhotelStar} />
-            </View>
+          </View>
+          <View style={{ margin: 10 }}>
             <Pressable onPress={showDatepicker}>
               <View
                 style={{
@@ -195,7 +203,6 @@ export default function HotelDetailsScreen({ navigation, route }) {
                   height: 40,
                   padding: 10,
                   marginVertical: 10,
-                  marginTop: 30,
                   justifyContent: "center",
                 }}
               >
@@ -255,7 +262,7 @@ export default function HotelDetailsScreen({ navigation, route }) {
           <Button title="Rezervasyon Yap" onPress={bookingHotel} />
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -265,8 +272,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   imageItem: {
-    width,
+    width: 290,
     height: 250,
     resizeMode: "cover",
+    borderRadius: 15,
+    marginRight: 10,
   },
 });
